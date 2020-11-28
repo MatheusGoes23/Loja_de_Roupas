@@ -21,7 +21,11 @@ public class ProprietarioVO {
 	}
 
 	public void setNome(String nome) {
-		Nome = nome;
+		if (nome.equals(""))
+			nome = null;
+		else
+			nome = nome.toUpperCase();
+		this.Nome = nome;
 	}
 
 	public String getCpf() {
@@ -29,7 +33,9 @@ public class ProprietarioVO {
 	}
 
 	public void setCpf(String cpf) {
-		Cpf = cpf;
+		if (cpf.equals(""))
+			cpf = null;
+		this.Cpf = cpf;
 	}
 
 	public String getLogin() {
@@ -37,7 +43,11 @@ public class ProprietarioVO {
 	}
 
 	public void setLogin(String login) {
-		Login = login;
+		if (login.equals(""))
+			login = null;
+		else
+			login = login.toLowerCase();
+		this.Login = login;
 	}
 
 	public String getSenha() {
@@ -45,6 +55,8 @@ public class ProprietarioVO {
 	}
 
 	public void setSenha(String senha) {
-		Senha = senha;
+		if (senha.equals(""))
+			senha = null;
+		this.Senha = senha;
 	}
 }

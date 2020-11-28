@@ -2,8 +2,8 @@ package model.vo;
 
 public class ProdutoVO extends FuncionarioVO {
 	private Long Id_Produto;
-	private Double Valor;
 	private String Descricao;
+	private Double Valor;
 	private int Quantidade;
 
 	// Métodos Getters e Setters
@@ -15,20 +15,24 @@ public class ProdutoVO extends FuncionarioVO {
 		Id_Produto = id_Produto;
 	}
 
+	public String getDescricao() {
+		return Descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		if (descricao.equals(""))
+			descricao = null;
+		else
+			descricao = descricao.toUpperCase();
+		this.Descricao = descricao;
+	}
+
 	public Double getValor() {
 		return Valor;
 	}
 
 	public void setValor(Double Valor) {
 		this.Valor = Valor;
-	}
-
-	public String getDescricao() {
-		return Descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		Descricao = descricao;
 	}
 
 	public int getQuantidade() {

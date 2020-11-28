@@ -1,9 +1,11 @@
 package model.vo;
 
+import java.sql.Date;
+
 public class CompraVO extends ClienteVO {
 
 	private Long Id_Compra;
-	private String Data;
+	private Date Data;
 	private String Hora;
 
 	// Métodos Getters e Setters
@@ -15,12 +17,12 @@ public class CompraVO extends ClienteVO {
 		Id_Compra = id_Compra;
 	}
 
-	public String getData() {
+	public Date getData() {
 		return Data;
 	}
 
-	public void setData(String data) {
-		Data = data;
+	public void setData(Date date) {
+		Data = date;
 	}
 
 	public String getHora() {

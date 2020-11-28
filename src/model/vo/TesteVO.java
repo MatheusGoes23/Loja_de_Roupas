@@ -1,6 +1,7 @@
 package model.vo;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -182,16 +183,16 @@ public class TesteVO {
 		leitura.nextLine();// Limpando o buffer do teclado
 
 		// Guardando os dados de um Compra
-		Date hoje = new Date();
-		SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = new Date();
+		// SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
 		SimpleDateFormat hora = new SimpleDateFormat("HH:mm:ss");
 
 		compVO.setId_Compra(id);
 		compVO.setId_Funcionario(idfunc);
 		compVO.setId_Cliente(idcli);
 		compVO.setValor(valor);
-		compVO.setData(data.format(hoje));
-		compVO.setHora(hora.format(hoje));
+		// compVO.setData(data.format(date)); //alterado o setData
+		compVO.setHora(hora.format(date));
 
 		// Mostrando os dados de um Compra
 		System.out.println("-----------Dados de um compra----------");
