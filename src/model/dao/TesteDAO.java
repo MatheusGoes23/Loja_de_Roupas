@@ -47,9 +47,9 @@ public class TesteDAO {
 
 		// Pesquisar e retornar um proprietario pelo id_proprietario, nome, cpf ou login
 		// List<ProprietarioVO> proprietarios = propdao.pesquisarByLogin(prop);
-		// for (ProprietarioVO cli2 : proprietarios) {
-		// System.out.println(cli2.getId_Proprietario() + "\t" + cli2.getNome() + "\t" +
-		// cli2.getCpf());
+		// for (ProprietarioVO prop1 : proprietarios) {
+		// System.out.println(prop1.getId_Proprietario() + "\t" + prop1.getNome() + "\t"
+		// + prop1.getCpf());
 		// }
 
 		// --------Listar---------
@@ -247,18 +247,18 @@ public class TesteDAO {
 		// }
 
 		// ------------------------Teste Compra----------------------------
-		CompraDAO<CompraVO> compdao = new CompraDAO<CompraVO>();
+		// CompraDAO<CompraVO> compdao = new CompraDAO<CompraVO>();
 
-		CompraVO comp = new CompraVO();
-		comp.setId_Compra(5L);
-		comp.setId_Funcionario(1L);
-		comp.setId_Cliente(1L);
-		comp.setValor(50.0);
+		// CompraVO comp = new CompraVO();
+		// comp.setId_Compra(5L);
+		// comp.setId_Funcionario(1L);
+		// comp.setId_Cliente(1L);
+		// comp.setValor(50.0);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		Calendar c = Calendar.getInstance();
-		c.setTime(sdf.parse("2020-11-28"));
-		comp.setData(new java.sql.Date(c.getTimeInMillis()));
+		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// Calendar c = Calendar.getInstance();
+		// c.setTime(sdf.parse("2020-11-28"));
+		// comp.setData(new java.sql.Date(c.getTimeInMillis()));
 
 		// -------- inserir uma compra---------
 		// compdao.inserir(comp);
