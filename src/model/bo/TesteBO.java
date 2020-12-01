@@ -29,7 +29,7 @@ public class TesteBO {
 		// prop.setNome("Matheus Goes");
 		// prop.setCpf("11111111111");
 		// prop.setLogin("MatHeus");
-		// prop.setSenha("matheus");
+		// prop.setSenha("goes");
 
 		// --------alterar proprietario---------
 		// propbo.alterar(prop);
@@ -45,7 +45,7 @@ public class TesteBO {
 		// List<ProprietarioVO> proprietarios = propbo.listar();
 		// for (ProprietarioVO prop1 : proprietarios) {
 		// System.out.println(prop1.getId_Proprietario() + "\t" + prop1.getNome() + "\t"
-		// + prop1.getCpf());
+		// + prop1.getSenha());
 		// }
 
 		// ------------------------Teste Gerente----------------------------

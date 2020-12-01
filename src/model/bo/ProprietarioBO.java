@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.AutenticationException;
 import exception.InsertException;
 import model.dao.ProprietarioDAO;
 import model.vo.ProprietarioVO;
@@ -14,6 +15,26 @@ public class ProprietarioBO<VO extends ProprietarioVO> {
 	static private ProprietarioDAO<ProprietarioVO> dao = new ProprietarioDAO<ProprietarioVO>();
 
 	// Métodos
+
+	public boolean autenticar(VO vo) throws AutenticationException, IOException {
+		boolean aut = false;
+		try {
+			ResultSet rs = dao.buscarByLogin(vo);
+			if (rs.next()) {
+				if (!rs.getString("senha").equals(vo.getSenha())) {
+					throw new AutenticationException();
+				} else {
+					aut = true;
+				}
+			} else {
+				throw new AutenticationException();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new AutenticationException();
+		}
+		return aut;
+	}
 
 	public void alterar(VO vo) throws InsertException, IOException {
 		try {

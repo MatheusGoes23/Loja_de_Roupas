@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="1370.0" style="-fx-background-color: #ebeef3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FrontController">
+   <children>
+      <Button layoutX="344.0" layoutY="224.0" mnemonicParsing="false" onAction="#telaLoginProprietario" prefHeight="220.0" prefWidth="186.0" style="-fx-background-color: #f0f2f5;">
+         <graphic>
+            <ImageView fitHeight="177.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../VE/Cargo1.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Text fill="#087326" layoutX="359.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proprietário" textAlignment="CENTER" wrappingWidth="153.296875">
+         <font>
+            <Font name="Times New Roman Bold" size="28.0" />
+         </font>
+      </Text>
+      <Button layoutX="595.0" layoutY="224.0" mnemonicParsing="false" onAction="#telaLoginGerente" prefHeight="220.0" prefWidth="182.0" style="-fx-background-color: #f0f2f5;">
+         <graphic>
+            <ImageView fitHeight="177.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../VE/Cargo1.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Text fill="#087326" layoutX="608.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gerente" textAlignment="CENTER" wrappingWidth="153.296875">
+         <font>
+            <Font name="Times New Roman Bold" size="28.0" />
+         </font>
+      </Text>
+      <Button layoutX="846.0" layoutY="224.0" mnemonicParsing="false" onAction="#telaLoginFuncionario" prefHeight="220.0" prefWidth="182.0" style="-fx-background-color: #f0f2f5;">
+         <graphic>
+            <ImageView fitHeight="177.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../VE/Cargo1.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Text fill="#087326" layoutX="861.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Funcionário" textAlignment="CENTER" wrappingWidth="153.296875">
+         <font>
+            <Font name="Times New Roman Bold" size="28.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>

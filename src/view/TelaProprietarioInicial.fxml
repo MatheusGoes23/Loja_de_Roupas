@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="705.0" prefWidth="1370.0" style="-fx-background-color: #ebeef3;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.FrontController">
+   <children>
+      <Label layoutX="-1.0" layoutY="46.0" prefHeight="42.0" prefWidth="1372.0" style="-fx-background-color: white; -fx-border-color: #dde0e6; -fx-border-width: 1.5;" />
+      <Button fx:id="menuGerSele" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="35.0" layoutY="37.0" mnemonicParsing="false" onAction="#gerentesProprietario" prefHeight="48.0" prefWidth="99.0" style="-fx-border-radius: 0; -fx-background-color: white;" text="Gerentes" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="menuFuncSele" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="136.0" layoutY="37.0" mnemonicParsing="false" onAction="#funcionariosProprietario" prefHeight="48.0" prefWidth="134.0" style="-fx-border-radius: 0; -fx-background-color: white;" text="Funcionários" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="menuCliSele" alignment="BOTTOM_CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="37.0" mnemonicParsing="false" onAction="#clientesProprietario" prefHeight="48.0" prefWidth="92.0" style="-fx-border-radius: 0; -fx-background-color: white;" text="Clientes" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Label fx:id="barraFuncSele" layoutX="144.0" layoutY="83.0" prefHeight="2.0" prefWidth="120.0" style="-fx-background-color: #087326;" visible="false">
+         <font>
+            <Font size="1.0" />
+         </font>
+      </Label>
+      <Label fx:id="barraGerSele" layoutX="43.0" layoutY="83.0" prefHeight="2.0" prefWidth="85.0" style="-fx-background-color: #087326;" visible="false">
+         <font>
+            <Font size="1.0" />
+         </font>
+      </Label>
+      <Label fx:id="barraCliSele" layoutX="278.0" layoutY="83.0" prefHeight="2.0" prefWidth="78.0" style="-fx-background-color: #087326;" visible="false">
+         <font>
+            <Font size="1.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="46.0" prefWidth="1370.0" style="-fx-background-color: #087326;" text="Menu do Proprietário" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="32.0" />
+         </font>
+      </Label>
+      <Button layoutX="1260.0" layoutY="7.0" mnemonicParsing="false" onAction="#telaInicial" prefHeight="31.0" prefWidth="99.0" style="-fx-background-color: #C90101;" text="Sair" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>
