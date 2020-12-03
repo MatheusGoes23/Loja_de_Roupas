@@ -1,6 +1,7 @@
 package controller;
 
 import java.net.URL;
+import java.sql.Date;
 import java.util.ResourceBundle;
 
 import exception.AutenticationException;
@@ -203,11 +204,33 @@ public class FrontController implements Initializable {
 	@FXML
 	private TextField pesquisarProd;
 
+	// Proprietário/View Compras
+	@FXML
+	private TableColumn<PedidoVO, String> tableNomeViewComp;
+	@FXML
+	private TableColumn<PedidoVO, String> tableCpfViewComp;
+	@FXML
+	private TableColumn<PedidoVO, String> tableDescricaoViewComp;
+	@FXML
+	private TableColumn<PedidoVO, Integer> tableQuantidadeViewComp;
+	@FXML
+	private TableColumn<PedidoVO, Double> tableValorViewComp;
+	@FXML
+	private TableColumn<PedidoVO, Date> tableDataViewComp;
+	@FXML
+	private TableColumn<PedidoVO, String> tableHoraViewComp;
+	@FXML
+	private TableView<PedidoVO> tableViewComp;
+
+	@FXML
+	private TextField pesquisarViewComp;
+
 	// Tabelas
 	private ObservableList<GerenteVO> listaGerentes = FXCollections.observableArrayList();
 	private ObservableList<FuncionarioVO> listaFuncionarios = FXCollections.observableArrayList();
 	private ObservableList<ClienteVO> listaClientes = FXCollections.observableArrayList();
 	private ObservableList<ProdutoVO> listaProdutos = FXCollections.observableArrayList();
+	private ObservableList<PedidoVO> listaViewComp = FXCollections.observableArrayList();
 
 	private static GerenteVO gerenteSelecionado;
 	private static FuncionarioVO funcionarioSelecionado;
@@ -306,6 +329,13 @@ public class FrontController implements Initializable {
 
 		} catch (Exception e) {
 		}
+
+		try {
+			tableViewComp();
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	// ----------------------INICIO-------------------------
@@ -987,6 +1017,45 @@ public class FrontController implements Initializable {
 		}
 	}
 
+	// ----------------------PROPRIETÁRIO/VIEW COMPRA-------------------------
+
+	public void tableViewComp() throws Exception {
+		tableNomeViewComp.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		tableCpfViewComp.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+		tableDescricaoViewComp.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+		tableQuantidadeViewComp.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+		tableValorViewComp.setCellValueFactory(new PropertyValueFactory<>("valor"));
+		tableDataViewComp.setCellValueFactory(new PropertyValueFactory<>("data"));
+		tableHoraViewComp.setCellValueFactory(new PropertyValueFactory<>("hora"));
+
+		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
+		listaViewComp = FXCollections.observableList(bo.listarComprados());
+		tableViewComp.setItems(listaViewComp);
+	}
+
+	public void pesquisarViewComp(ActionEvent event) throws Exception {
+		tableViewComp.setItems(pesquisarViewComp());
+	}
+
+	public ObservableList<PedidoVO> pesquisarViewComp() {
+		ObservableList<PedidoVO> viewCompPesquisa = FXCollections.observableArrayList();
+		for (int x = 0; x < listaViewComp.size(); x++) {
+			if ((listaViewComp.get(x).getNome().contains(pesquisarViewComp.getText().toUpperCase()))
+					| (listaViewComp.get(x).getCpf().contains(pesquisarViewComp.getText()))
+					| (listaViewComp.get(x).getDescricao().contains(pesquisarViewComp.getText()))
+					| (String.valueOf(listaViewComp.get(x).getValor()).contains(pesquisarViewComp.getText()))) {
+				viewCompPesquisa.add(listaViewComp.get(x));
+			}
+		}
+		return viewCompPesquisa;
+	}
+
+	public void refreshTableViewComp(ActionEvent event) throws Exception {
+		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
+		listaViewComp = FXCollections.observableList(bo.listarComprados());
+		tableViewComp.setItems(listaViewComp);
+	}
+
 // ----------------------PROPRIETÁRIO/MENU-------------------------
 
 	public void gerentesProprietario(ActionEvent event) throws Exception {
@@ -1096,6 +1165,8 @@ public class FrontController implements Initializable {
 		barraProdSele.setVisible(false);
 		menuCompSele.setTextFill(Color.valueOf("#087326"));
 		barraCompSele.setVisible(true);
+		refreshTableViewComp(null);
+		pesquisarViewComp.setText("");
 	}
 
 	public void telaLoginProprietario(ActionEvent event) throws Exception {

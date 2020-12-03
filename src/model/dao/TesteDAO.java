@@ -350,5 +350,40 @@ public class TesteDAO {
 		// ped1.getId_Compra() + "\t"
 		// + ped1.getValor() + "\t" + ped1.getQuantidade());
 		// }
+
+		// --------Listar Produtos_Comprados_Cliente---------
+		// List<PedidoVO> pedidos = peddao.listarComprados();
+		// for (PedidoVO ped1 : pedidos) {
+		// System.out.println(ped1.getNome() + "\t" + ped1.getCpf() + "\t" +
+		// ped1.getDescricao() + "\t"
+		// + ped1.getQuantidade() + "\t" + ped1.getValor() + "\t" + ped1.getData() +
+		// "\t" + ped1.getHora());
+		// }
+
+		// PedidoVO ped = new PedidoVO();
+		// ped.setNome("Jonas Marinho");
+		// ped.setCpf("58974122365");
+		// ped.setDescricao("Meia Masculina Grande");
+		// ped.setQuantidade(3);
+		// ped.setValor(30.0);
+
+		// SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		// Calendar c = Calendar.getInstance();
+		// c.setTime(sdf.parse("2020-11-19"));
+
+		// ped.setData(new java.sql.Date(c.getTimeInMillis()));
+		// ped.setHora("20:33:23.510065");
+
+		// Pesquisar e retornar um Produtos_Comprados_Cliente pelo nome, cpf, valor ou
+		// data
+
+		// List<PedidoVO> pedidos = peddao.pesquisarCompradosByData(ped);
+		// for (PedidoVO ped1 : pedidos) {
+		// System.out.println(ped1.getNome() + "\t" + ped1.getCpf() + "\t" +
+		// ped1.getDescricao() + "\t"
+		// + ped1.getQuantidade() + "\t" + ped1.getValor() + "\t" + ped1.getData() +
+		// "\t" + ped1.getHora());
+		// }
+
 	}
 }

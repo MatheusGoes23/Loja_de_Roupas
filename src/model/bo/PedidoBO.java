@@ -80,4 +80,39 @@ public class PedidoBO<VO extends PedidoVO> {
 
 		return ped;
 	}
+
+	public List<PedidoVO> listarComprados() throws IOException {
+		List<PedidoVO> ped = dao.listarComprados();
+
+		return ped;
+	}
+
+	public List<PedidoVO> pesquisarComprados(VO vo) throws InsertException, IOException {
+		List<PedidoVO> ped = new ArrayList<PedidoVO>();
+		try {
+			ResultSet rs = dao.buscarCompradosByNome(vo);
+			ResultSet rs2 = dao.buscarCompradosByCpf(vo);
+			ResultSet rs3 = dao.buscarCompradosByDescricao(vo);
+			ResultSet rs4 = dao.buscarCompradosByValor(vo);
+			ResultSet rs5 = dao.buscarCompradosByData(vo);
+
+			if (rs.next()) {
+				ped = dao.pesquisarCompradosByNome(vo);
+			} else if (rs2.next()) {
+				ped = dao.pesquisarCompradosByCpf(vo);
+			} else if (rs3.next()) {
+				ped = dao.pesquisarCompradosByDescricao(vo);
+			} else if (rs4.next()) {
+				ped = dao.pesquisarCompradosByValor(vo);
+			} else if (rs5.next()) {
+				ped = dao.pesquisarCompradosByData(vo);
+			} else {
+				throw new InsertException("Impossível encontrar, pois não existe esse pedido");
+			}
+
+		} catch (SQLException e) {
+			throw new InsertException(e.getMessage());
+		}
+		return ped;
+	}
 }

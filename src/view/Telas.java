@@ -32,8 +32,8 @@ public class Telas extends Application {
 		primaryStage.setResizable(false);
 		primaryStage.show();
 
-		telaInicial();
-		// telaProprietarioInicial();
+		//telaInicial();
+		 telaProprietarioInicial();
 	}
 
 	public static void telaInicial() throws Exception {
