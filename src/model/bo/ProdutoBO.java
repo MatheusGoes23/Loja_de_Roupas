@@ -17,10 +17,9 @@ public class ProdutoBO<VO extends ProdutoVO> {
 
 	public void inserir(VO vo) throws InsertException, IOException {
 		try {
-			ResultSet rs = dao.buscarById_Produto(vo);
 			ResultSet rs2 = dao.buscarByDescricao(vo);
 
-			if (rs.next() | rs2.next()) {
+			if (rs2.next()) {
 				throw new InsertException("Impossível adicionar, pois já existe esse produto");
 			} else {
 				dao.inserir(vo);

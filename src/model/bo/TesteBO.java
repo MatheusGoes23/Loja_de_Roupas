@@ -49,7 +49,7 @@ public class TesteBO {
 		// }
 
 		// ------------------------Teste Gerente----------------------------
-		// GerenteBO<GerenteVO> gerbo = new GerenteBO<GerenteVO>();
+	//	GerenteBO<GerenteVO> gerbo = new GerenteBO<GerenteVO>();
 		// GerenteVO ger = new GerenteVO();
 		// ger.setId_Gerente(14L);
 		// ger.setId_Proprietario(1L);
@@ -76,26 +76,25 @@ public class TesteBO {
 		// }
 
 		// --------Listar---------
-		// List<GerenteVO> gerentes = gerbo.listar();
-		// for (GerenteVO ger1 : gerentes) {
-		// System.out.println(ger1.getId_Gerente() + "\t" + ger1.getId_Proprietario() +
-		// "\t" + ger1.getNome() + "\t"
-		// + ger1.getCpf());
-		// }
+		//List<GerenteVO> gerentes = gerbo.listar();
+		//for (GerenteVO ger1 : gerentes) {
+		//	System.out.println(ger1.getId_Gerente() + "\t" + ger1.getId_Proprietario() + "\t" + ger1.getNome() + "\t"
+		//			+ ger1.getCpf());
+	//	}
 
 		// ------------------------Teste Funcionario----------------------------
-		// FuncionarioBO<FuncionarioVO> funcbo = new FuncionarioBO<FuncionarioVO>();
+		 FuncionarioBO<FuncionarioVO> funcbo = new FuncionarioBO<FuncionarioVO>();
 
-		// FuncionarioVO func = new FuncionarioVO();
-		// func.setId_Funcionario(5L);
-		// func.setId_Proprietario(1L);
-		// func.setNome("MatheUs GoES");
-		// func.setCpf("00000000008");
-		// func.setLogin("MaThs123");
-		// func.setSenha("matheus123");
+		 FuncionarioVO func = new FuncionarioVO();
+		func.setId_Funcionario(5L);
+		 func.setId_Proprietario(1L);
+		 func.setNome("MatheUs GoES");
+		 func.setCpf("00000000008");
+		 func.setLogin("MaThs123");
+		func.setSenha("matheus123");
 
 		// -------- inserir um funcionario---------
-		// funcbo.inserir(func);
+		 funcbo.inserir(func);
 
 		// --------alterar funcionario---------
 		// funcbo.alterar(func);

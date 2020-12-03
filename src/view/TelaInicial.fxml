@@ -18,7 +18,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Text fill="#087326" layoutX="359.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proprietário" textAlignment="CENTER" wrappingWidth="153.296875">
+      <Text fill="#087326" layoutX="362.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proprietário" textAlignment="CENTER" wrappingWidth="153.296875">
          <font>
             <Font name="Times New Roman Bold" size="28.0" />
          </font>
@@ -31,7 +31,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Text fill="#087326" layoutX="608.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gerente" textAlignment="CENTER" wrappingWidth="153.296875">
+      <Text fill="#087326" layoutX="612.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gerente" textAlignment="CENTER" wrappingWidth="153.296875">
          <font>
             <Font name="Times New Roman Bold" size="28.0" />
          </font>
@@ -44,7 +44,7 @@
                </image>
             </ImageView>
          </graphic></Button>
-      <Text fill="#087326" layoutX="861.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Funcionário" textAlignment="CENTER" wrappingWidth="153.296875">
+      <Text fill="#087326" layoutX="864.0" layoutY="443.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Funcionário" textAlignment="CENTER" wrappingWidth="153.296875">
          <font>
             <Font name="Times New Roman Bold" size="28.0" />
          </font>

@@ -9,6 +9,7 @@ public class GerenteVO extends ProprietarioVO {
 	}
 
 	public void setId_Gerente(Long id_Gerente) {
+		// Id_Gerente = Long.valueOf(id_Gerente);
 		Id_Gerente = id_Gerente;
 	}
 }

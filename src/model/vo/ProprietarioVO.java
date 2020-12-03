@@ -13,7 +13,7 @@ public class ProprietarioVO {
 	}
 
 	public void setId_Proprietario(Long id_Proprietario) {
-		Id_Proprietario = id_Proprietario;
+		this.Id_Proprietario = id_Proprietario;
 	}
 
 	public String getNome() {

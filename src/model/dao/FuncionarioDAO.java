@@ -103,7 +103,7 @@ public class FuncionarioDAO<VO extends FuncionarioVO> extends BaseDAO<VO> {
 
 	// Busca um funcionario pelo id_proprietario
 	public ResultSet buscarById_Proprietario(VO func) throws SQLException, IOException {
-		String sql = "SELECT * FROM funcionario WHERE id_proprietario=?";
+		String sql = "SELECT * FROM funcionario WHERE Id_Proprietario=?";
 		PreparedStatement ptst;
 		ResultSet resultado = null;
 		try {
