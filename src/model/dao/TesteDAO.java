@@ -54,10 +54,11 @@ public class TesteDAO {
 
 		// --------Listar---------
 		// List<ProprietarioVO> proprietarios = propdao.listar();
+
 		// for (ProprietarioVO prop1 : proprietarios) {
 		// System.out.println(prop1.getId_Proprietario() + "\t" + prop1.getNome() + "\t"
-		// +
-		// prop1.getCpf());
+		// + prop1.getCpf());
+		//
 		// }
 
 		// ------------------------Teste Gerente----------------------------

@@ -16,15 +16,16 @@ public class ProprietarioBO<VO extends ProprietarioVO> {
 
 	// Métodos
 
-	public boolean autenticar(VO vo) throws AutenticationException, IOException {
-		boolean aut = false;
+	public ProprietarioVO autenticar(VO vo) throws AutenticationException, IOException {
+		ProprietarioVO propaut = new ProprietarioVO();
 		try {
 			ResultSet rs = dao.buscarByLogin(vo);
 			if (rs.next()) {
 				if (!rs.getString("senha").equals(vo.getSenha())) {
 					throw new AutenticationException();
 				} else {
-					aut = true;
+					List<ProprietarioVO> prop = dao.pesquisarByLogin(vo);
+					propaut = prop.get(0);
 				}
 			} else {
 				throw new AutenticationException();
@@ -33,7 +34,7 @@ public class ProprietarioBO<VO extends ProprietarioVO> {
 			e.printStackTrace();
 			throw new AutenticationException();
 		}
-		return aut;
+		return propaut;
 	}
 
 	public void alterar(VO vo) throws InsertException, IOException {

@@ -346,7 +346,8 @@ public class FrontController implements Initializable {
 		}
 	}
 
-	// ----------------------PROPRIETÁRIO-------------------------
+	// ----------------------LOGIN PROPRIETÁRIO-------------------------
+	public static ProprietarioVO propaut;
 
 	public void autenticarProprietario(ActionEvent event) throws Exception {
 		ProprietarioVO vo = new ProprietarioVO();
@@ -354,14 +355,44 @@ public class FrontController implements Initializable {
 		vo.setSenha(senha.getText());
 
 		try {
-			propbo.autenticar(vo);
+			propaut = propbo.autenticar(vo);
 			Telas.telaProprietarioInicial();
 		} catch (AutenticationException e) {
 			erroAut.setVisible(true);
 		}
 	}
 
-	// ----------------------PROPRIETÁRIO/GERENTE-------------------------
+	// ----------------------LOGIN FUNCIONÁRIO-------------------------
+
+	public void autenticarFuncionario(ActionEvent event) throws Exception {
+		FuncionarioVO vo = new FuncionarioVO();
+		vo.setLogin(login.getText());
+		vo.setSenha(senha.getText());
+
+		try {
+			funcbo.autenticar(vo);
+			Telas.telaFuncionarioInicial();
+		} catch (AutenticationException e) {
+			erroAut.setVisible(true);
+		}
+	}
+
+	// ----------------------LOGIN GERENTE-------------------------
+
+	public void autenticarGerente(ActionEvent event) throws Exception {
+		GerenteVO vo = new GerenteVO();
+		vo.setLogin(login.getText());
+		vo.setSenha(senha.getText());
+
+		try {
+			gerbo.autenticar(vo);
+			Telas.telaGerenteInicial();
+		} catch (AutenticationException e) {
+			erroAut.setVisible(true);
+		}
+	}
+
+	// ----------------------PROPRIETÁRIO-------------------------
 
 	public void tableGerentes() throws Exception {
 		tableIdGer.setCellValueFactory(new PropertyValueFactory<>("Id_Gerente"));
@@ -395,6 +426,7 @@ public class FrontController implements Initializable {
 		GerenteBO<GerenteVO> bo = new GerenteBO<GerenteVO>();
 		listaGerentes = FXCollections.observableList(bo.listar());
 		tableGerentes.setItems(listaGerentes);
+		pesquisarGer.setText("");
 	}
 
 	public void refreshGerente() {
@@ -410,10 +442,7 @@ public class FrontController implements Initializable {
 	public void inserirGerente() {
 		GerenteVO vo = new GerenteVO();
 
-		if (idProprietarioGerente.getText().isEmpty()) {
-			erroPropGer.setText("Id_Proprietario vazio!");
-			erroPropGer.setVisible(true);
-		} else if (nomeGerente.getText().isEmpty()) {
+		if (nomeGerente.getText().isEmpty()) {
 			erroPropGer.setText("Nome vazio!");
 			erroPropGer.setVisible(true);
 		} else if (cpfGerente.getText().isEmpty()) {
@@ -427,7 +456,7 @@ public class FrontController implements Initializable {
 			erroPropGer.setVisible(true);
 		} else {
 			try {
-				vo.setId_Proprietario(Long.parseLong(idProprietarioGerente.getText()));
+				vo.setId_Proprietario(propaut.getId_Proprietario());
 				vo.setNome(nomeGerente.getText());
 				vo.setCpf(cpfGerente.getText());
 				vo.setLogin(loginGerente2.getText());
@@ -456,10 +485,7 @@ public class FrontController implements Initializable {
 	public void alterarGerente() {
 		GerenteVO vo = new GerenteVO();
 
-		if (idProprietarioGerente.getText().isEmpty()) {
-			erroPropGer.setText("Id_Proprietario vazio!");
-			erroPropGer.setVisible(true);
-		} else if (nomeGerente.getText().isEmpty()) {
+		if (nomeGerente.getText().isEmpty()) {
 			erroPropGer.setText("Nome vazio!");
 			erroPropGer.setVisible(true);
 		} else if (cpfGerente.getText().isEmpty()) {
@@ -480,7 +506,7 @@ public class FrontController implements Initializable {
 		} else {
 			try {
 				vo.setId_Gerente(Long.parseLong(idGerente.getText()));
-				vo.setId_Proprietario(Long.parseLong(idProprietarioGerente.getText()));
+				vo.setId_Proprietario(propaut.getId_Proprietario());
 				vo.setNome(nomeGerente.getText());
 				vo.setCpf(cpfGerente.getText());
 				vo.setLogin(loginGerente2.getText());
@@ -509,10 +535,7 @@ public class FrontController implements Initializable {
 	public void removerGerente() {
 		GerenteVO vo = new GerenteVO();
 
-		if (idProprietarioGerente.getText().isEmpty()) {
-			erroPropGer.setText("Id_Proprietario vazio!");
-			erroPropGer.setVisible(true);
-		} else if (nomeGerente.getText().isEmpty()) {
+		if (nomeGerente.getText().isEmpty()) {
 			erroPropGer.setText("Nome vazio!");
 			erroPropGer.setVisible(true);
 		} else if (cpfGerente.getText().isEmpty()) {
@@ -547,7 +570,7 @@ public class FrontController implements Initializable {
 		}
 	}
 
-// ----------------------PROPRIETÁRIO/FUNCIONÁRIO-------------------------
+// ----------------------PROPRIETÁRIO/GERENTE-------------------------
 
 	public void tableFuncionarios() throws Exception {
 		tableIdFunc.setCellValueFactory(new PropertyValueFactory<>("Id_Funcionario"));
@@ -581,6 +604,7 @@ public class FrontController implements Initializable {
 		FuncionarioBO<FuncionarioVO> bo = new FuncionarioBO<FuncionarioVO>();
 		listaFuncionarios = FXCollections.observableList(bo.listar());
 		tableFuncionarios.setItems(listaFuncionarios);
+		pesquisarFunc.setText("");
 	}
 
 	public void refreshFuncionario() {
@@ -596,10 +620,7 @@ public class FrontController implements Initializable {
 	public void inserirFuncionario() {
 		FuncionarioVO vo = new FuncionarioVO();
 
-		if (idProprietarioFuncionario.getText().isEmpty()) {
-			erroPropFunc.setText("Id_Proprietario vazio!");
-			erroPropFunc.setVisible(true);
-		} else if (nomeFuncionario.getText().isEmpty()) {
+		if (nomeFuncionario.getText().isEmpty()) {
 			erroPropFunc.setText("Nome vazio!");
 			erroPropFunc.setVisible(true);
 		} else if (cpfFuncionario.getText().isEmpty()) {
@@ -613,7 +634,7 @@ public class FrontController implements Initializable {
 			erroPropFunc.setVisible(true);
 		} else {
 			try {
-				vo.setId_Proprietario(Long.parseLong(idProprietarioFuncionario.getText()));
+				vo.setId_Proprietario(propaut.getId_Proprietario());
 				vo.setNome(nomeFuncionario.getText());
 				vo.setCpf(cpfFuncionario.getText());
 				vo.setLogin(loginFuncionario2.getText());
@@ -642,10 +663,7 @@ public class FrontController implements Initializable {
 	public void alterarFuncionario() {
 		FuncionarioVO vo = new FuncionarioVO();
 
-		if (idProprietarioFuncionario.getText().isEmpty()) {
-			erroPropFunc.setText("Id_Proprietario vazio!");
-			erroPropFunc.setVisible(true);
-		} else if (nomeFuncionario.getText().isEmpty()) {
+		if (nomeFuncionario.getText().isEmpty()) {
 			erroPropFunc.setText("Nome vazio!");
 			erroPropFunc.setVisible(true);
 		} else if (cpfFuncionario.getText().isEmpty()) {
@@ -666,7 +684,7 @@ public class FrontController implements Initializable {
 		} else {
 			try {
 				vo.setId_Funcionario(Long.parseLong(idFuncionario.getText()));
-				vo.setId_Proprietario(Long.parseLong(idProprietarioFuncionario.getText()));
+				vo.setId_Proprietario(propaut.getId_Proprietario());
 				vo.setNome(nomeFuncionario.getText());
 				vo.setCpf(cpfFuncionario.getText());
 				vo.setLogin(loginFuncionario2.getText());
@@ -695,10 +713,7 @@ public class FrontController implements Initializable {
 	public void removerFuncionario() {
 		FuncionarioVO vo = new FuncionarioVO();
 
-		if (idProprietarioFuncionario.getText().isEmpty()) {
-			erroPropFunc.setText("Id_Proprietario vazio!");
-			erroPropFunc.setVisible(true);
-		} else if (nomeFuncionario.getText().isEmpty()) {
+		if (nomeFuncionario.getText().isEmpty()) {
 			erroPropFunc.setText("Nome vazio!");
 			erroPropFunc.setVisible(true);
 		} else if (cpfFuncionario.getText().isEmpty()) {
@@ -734,7 +749,7 @@ public class FrontController implements Initializable {
 		}
 	}
 
-	// ----------------------PROPRIETÁRIO/CLIENTE-------------------------
+	// ----------------------PROPRIETÁRIO/GERENTE-------------------------
 
 	public void tableClientes() throws Exception {
 		tableIdCli.setCellValueFactory(new PropertyValueFactory<>("Id_Cliente"));
@@ -765,6 +780,7 @@ public class FrontController implements Initializable {
 		ClienteBO<ClienteVO> bo = new ClienteBO<ClienteVO>();
 		listaClientes = FXCollections.observableList(bo.listar());
 		tableClientes.setItems(listaClientes);
+		pesquisarCli.setText("");
 	}
 
 	public void refreshCliente() {
@@ -868,7 +884,7 @@ public class FrontController implements Initializable {
 		}
 	}
 
-	// ----------------------PROPRIETÁRIO/PRODUTOS-------------------------
+	// ----------------------PROPRIETÁRIO/GERENTE-------------------------
 
 	public void tableProdutos() throws Exception {
 		tableIdProd.setCellValueFactory(new PropertyValueFactory<>("Id_Produto"));
@@ -900,6 +916,7 @@ public class FrontController implements Initializable {
 		ProdutoBO<ProdutoVO> bo = new ProdutoBO<ProdutoVO>();
 		listaProdutos = FXCollections.observableList(bo.listar());
 		tableProdutos.setItems(listaProdutos);
+		pesquisarProd.setText("");
 	}
 
 	public void refreshProduto() {
@@ -935,7 +952,11 @@ public class FrontController implements Initializable {
 				valorProduto.setText("");
 				quantidadeProduto.setText("");
 
-				produtosProprietario(null);
+				try {
+					produtosProprietario(null);
+				} catch (Exception e) {
+					produtosGerente(null);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				erroPropProd.setText("Erro! Verifique os dados");
@@ -972,7 +993,11 @@ public class FrontController implements Initializable {
 				valorProduto.setText("");
 				quantidadeProduto.setText("");
 
-				produtosProprietario(null);
+				try {
+					produtosProprietario(null);
+				} catch (Exception e) {
+					produtosGerente(null);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				erroPropProd.setText("Erro! Verifique os dados");
@@ -1006,7 +1031,11 @@ public class FrontController implements Initializable {
 				valorProduto.setText("");
 				quantidadeProduto.setText("");
 
-				produtosProprietario(null);
+				try {
+					produtosProprietario(null);
+				} catch (Exception e) {
+					produtosGerente(null);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				erroPropProd.setText("Erro! Verifique os dados");
@@ -1017,7 +1046,7 @@ public class FrontController implements Initializable {
 		}
 	}
 
-	// ----------------------PROPRIETÁRIO/VIEW COMPRA-------------------------
+	// ----------------------PROPRIETÁRIO/GERENTE-------------------------
 
 	public void tableViewComp() throws Exception {
 		tableNomeViewComp.setCellValueFactory(new PropertyValueFactory<>("nome"));
@@ -1054,6 +1083,7 @@ public class FrontController implements Initializable {
 		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
 		listaViewComp = FXCollections.observableList(bo.listarComprados());
 		tableViewComp.setItems(listaViewComp);
+		pesquisarViewComp.setText("");
 	}
 
 // ----------------------PROPRIETÁRIO/MENU-------------------------
@@ -1169,6 +1199,83 @@ public class FrontController implements Initializable {
 		pesquisarViewComp.setText("");
 	}
 
+	// ----------------------GERENTE/MENU-------------------------
+
+	public void funcionariosGerente(ActionEvent event) throws Exception {
+		paneFunc.setVisible(true);
+		paneCli.setVisible(false);
+		paneProd.setVisible(false);
+		paneComp.setVisible(false);
+		menuFuncSele.setTextFill(Color.valueOf("#087326"));
+		barraFuncSele.setVisible(true);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		menuCompSele.setTextFill(Color.valueOf("black"));
+		barraCompSele.setVisible(false);
+		erroPropFunc.setVisible(false);
+		refreshTableFuncionario(null);
+		refreshFuncionario();
+		pesquisarFunc.setText("");
+	}
+
+	public void clientesGerente(ActionEvent event) throws Exception {
+		paneFunc.setVisible(false);
+		paneCli.setVisible(true);
+		paneProd.setVisible(false);
+		paneComp.setVisible(false);
+		menuFuncSele.setTextFill(Color.valueOf("black"));
+		barraFuncSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("#087326"));
+		barraCliSele.setVisible(true);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		menuCompSele.setTextFill(Color.valueOf("black"));
+		barraCompSele.setVisible(false);
+		erroPropCli.setVisible(false);
+		refreshTableCliente(null);
+		refreshCliente();
+		pesquisarCli.setText("");
+	}
+
+	public void produtosGerente(ActionEvent event) throws Exception {
+		paneFunc.setVisible(false);
+		paneCli.setVisible(false);
+		paneProd.setVisible(true);
+		paneComp.setVisible(false);
+		menuFuncSele.setTextFill(Color.valueOf("black"));
+		barraFuncSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("#087326"));
+		barraProdSele.setVisible(true);
+		menuCompSele.setTextFill(Color.valueOf("black"));
+		barraCompSele.setVisible(false);
+		refreshTableProduto(null);
+		refreshProduto();
+		pesquisarProd.setText("");
+	}
+
+	public void comprasGerente(ActionEvent event) throws Exception {
+		paneFunc.setVisible(false);
+		paneCli.setVisible(false);
+		paneProd.setVisible(false);
+		paneComp.setVisible(true);
+		menuFuncSele.setTextFill(Color.valueOf("black"));
+		barraFuncSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		menuCompSele.setTextFill(Color.valueOf("#087326"));
+		barraCompSele.setVisible(true);
+		refreshTableViewComp(null);
+		pesquisarViewComp.setText("");
+	}
+
+	// ------------------------------TELAS-----------------------------------
+
 	public void telaLoginProprietario(ActionEvent event) throws Exception {
 		try {
 			Telas.telaLoginProprietario();
@@ -1183,21 +1290,6 @@ public class FrontController implements Initializable {
 		}
 	}
 
-	// ----------------------GERENTE-------------------------
-
-	public void autenticarGerente(ActionEvent event) throws Exception {
-		GerenteVO vo = new GerenteVO();
-		vo.setLogin(login.getText());
-		vo.setSenha(senha.getText());
-
-		try {
-			gerbo.autenticar(vo);
-			Telas.telaGerenteInicial();
-		} catch (AutenticationException e) {
-			erroAut.setVisible(true);
-		}
-	}
-
 	public void telaLoginGerente(ActionEvent event) throws Exception {
 		try {
 			Telas.telaLoginGerente();
@@ -1209,21 +1301,6 @@ public class FrontController implements Initializable {
 		try {
 			Telas.telaGerenteInicial();
 		} catch (AutenticationException e) {
-		}
-	}
-
-	// ----------------------FUNCIONÁRIO-------------------------
-
-	public void autenticarFuncionario(ActionEvent event) throws Exception {
-		FuncionarioVO vo = new FuncionarioVO();
-		vo.setLogin(login.getText());
-		vo.setSenha(senha.getText());
-
-		try {
-			funcbo.autenticar(vo);
-			Telas.telaFuncionarioInicial();
-		} catch (AutenticationException e) {
-			erroAut.setVisible(true);
 		}
 	}
 
