@@ -115,4 +115,39 @@ public class PedidoBO<VO extends PedidoVO> {
 		}
 		return ped;
 	}
+
+	public List<PedidoVO> listarEx() throws IOException {
+		List<PedidoVO> ped = dao.listarEx();
+
+		return ped;
+	}
+
+	public List<PedidoVO> pesquisarEx(VO vo) throws InsertException, IOException {
+		List<PedidoVO> ped = new ArrayList<PedidoVO>();
+		try {
+			ResultSet rs = dao.buscarExByNome(vo);
+			ResultSet rs2 = dao.buscarExByCpf(vo);
+			ResultSet rs3 = dao.buscarExByFuncao(vo);
+
+			if (rs.next()) {
+				ped = dao.pesquisarExByNome(vo);
+			} else if (rs2.next()) {
+				ped = dao.pesquisarExByCpf(vo);
+			} else if (rs3.next()) {
+				ped = dao.pesquisarExByFuncao(vo);
+			} else {
+				throw new InsertException("Impossível encontrar, pois não existe esse ex_empregado");
+			}
+
+		} catch (SQLException e) {
+			throw new InsertException(e.getMessage());
+		}
+		return ped;
+	}
+
+	public List<PedidoVO> listarProdLog() throws IOException {
+		List<PedidoVO> ped = dao.listarProdLog();
+
+		return ped;
+	}
 }

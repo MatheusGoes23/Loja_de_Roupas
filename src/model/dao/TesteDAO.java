@@ -169,8 +169,8 @@ public class TesteDAO {
 
 		// ProdutoVO prod = new ProdutoVO();
 		// prod.setId_Produto(6L);
-		// prod.setDescricao("CuEca MeDiA");
-		// prod.setValor(50.0);
+		// prod.setDescricao("502");
+		// prod.setValor(100.0);
 		// prod.setQuantidade(100);
 
 		// -------- inserir um produto---------
@@ -252,7 +252,7 @@ public class TesteDAO {
 
 		// CompraVO comp = new CompraVO();
 		// comp.setId_Compra(5L);
-		// comp.setId_Funcionario(1L);
+		// comp.setId_Funcionario(2L);
 		// comp.setId_Cliente(1L);
 		// comp.setValor(50.0);
 
@@ -386,5 +386,39 @@ public class TesteDAO {
 		// "\t" + ped1.getHora());
 		// }
 
+		// --------Listar Ex-Empregados---------
+		// PedidoDAO<PedidoVO> peddao = new PedidoDAO<PedidoVO>();
+
+		// List<PedidoVO> pedidos = peddao.listarEx();
+		// for (PedidoVO ped1 : pedidos) {
+		// System.out.println(ped1.getNome() + "\t" + ped1.getCpf() + "\t" +
+		// ped1.getDescricao() + "\t"
+		// + ped1.getData());
+		// }
+
+		PedidoDAO<PedidoVO> peddao = new PedidoDAO<PedidoVO>();
+
+		PedidoVO ped = new PedidoVO();
+		// ped.setId_Pedido(5L);
+		ped.setId_Cliente(2L);
+		ped.setNome("ClienteNome");
+		ped.setCpf("ClienteCpf");
+
+		ped.setId_Funcionario(12L);
+
+		ped.setId_Produto(1L);
+		ped.setDescricao("Blusa Masculina Grande");
+		ped.setValor(30.0);
+		ped.setQuantidade(3);
+		
+		//peddao.inserirComp(ped);
+		//peddao.inserirPed(ped);
+
+		// --------Listar PEDIDOS NA TELA DE VENDER---------
+		List<PedidoVO> produtos = peddao.listarVenda();
+		for (PedidoVO prod1 : produtos) {
+			System.out.println(prod1.getId_Pedido() + "\t" + prod1.getDescricao() + "\t" + prod1.getQuantidade() + "\t"
+					+ prod1.getValor() + "\t" + prod1.getSubtotal());
+		}
 	}
 }

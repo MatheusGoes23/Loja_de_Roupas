@@ -7,6 +7,7 @@ public class ProdutoVO extends FuncionarioVO {
 	private int Quantidade;
 
 	// Métodos Getters e Setters
+
 	public Long getId_Produto() {
 		return Id_Produto;
 	}

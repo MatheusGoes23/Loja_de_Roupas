@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import model.bo.GerenteBO;
+import model.dao.PedidoDAO;
 import model.vo.ClienteVO;
 import model.vo.CompraVO;
 import model.vo.FuncionarioVO;
@@ -124,8 +125,8 @@ public class TesteBO {
 
 		// ProdutoVO prod = new ProdutoVO();
 		// prod.setId_Produto(6L);
-		// prod.setDescricao("CuEca MeDiA");
-		// prod.setValor(50.0);
+		// prod.setDescricao("jeDiA");
+		// prod.setValor(100.0);
 		// prod.setQuantidade(100);
 
 		// -------- inserir um produto---------
@@ -256,6 +257,16 @@ public class TesteBO {
 		// System.out.println(ped1.getId_Pedido() + "\t" + ped1.getId_Produto() + "\t" +
 		// ped1.getId_Compra() + "\t"
 		// + ped1.getValor() + "\t" + ped1.getQuantidade());
+		// }
+
+		// --------Listar Ex-Empregados---------
+		// PedidoBO<PedidoVO> peddao = new PedidoBO<PedidoVO>();
+
+		// List<PedidoVO> pedidos = peddao.listarEx();
+		// for (PedidoVO ped1 : pedidos) {
+		// System.out.println(ped1.getNome() + "\t" + ped1.getCpf() + "\t" +
+		// ped1.getDescricao() + "\t"
+		// + ped1.getData());
 		// }
 	}
 }

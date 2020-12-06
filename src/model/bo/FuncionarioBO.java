@@ -10,21 +10,23 @@ import exception.AutenticationException;
 import exception.InsertException;
 import model.dao.FuncionarioDAO;
 import model.vo.FuncionarioVO;
+import model.vo.ProprietarioVO;
 
 public class FuncionarioBO<VO extends FuncionarioVO> {
 	static private FuncionarioDAO<FuncionarioVO> dao = new FuncionarioDAO<FuncionarioVO>();
 
 	// Métodos
 
-	public boolean autenticar(VO vo) throws AutenticationException, IOException {
-		boolean aut = false;
+	public FuncionarioVO autenticar(VO vo) throws AutenticationException, IOException {
+		FuncionarioVO funcaut = new FuncionarioVO();
 		try {
 			ResultSet rs = dao.buscarByLogin(vo);
 			if (rs.next()) {
 				if (!rs.getString("senha").equals(vo.getSenha())) {
 					throw new AutenticationException();
 				} else {
-					aut = true;
+					List<FuncionarioVO> func = dao.pesquisarByLogin(vo);
+					funcaut = func.get(0);
 				}
 			} else {
 				throw new AutenticationException();
@@ -33,7 +35,7 @@ public class FuncionarioBO<VO extends FuncionarioVO> {
 			e.printStackTrace();
 			throw new AutenticationException();
 		}
-		return aut;
+		return funcaut;
 	}
 
 	public void inserir(VO vo) throws InsertException, IOException {

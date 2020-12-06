@@ -46,7 +46,7 @@ public class ProprietarioVO {
 		if (login.equals(""))
 			login = null;
 		else
-			login = login.toLowerCase();
+			login = login.toUpperCase();
 		this.Login = login;
 	}
 

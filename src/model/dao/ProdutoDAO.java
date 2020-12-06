@@ -15,14 +15,11 @@ public class ProdutoDAO<VO extends ProdutoVO> extends BaseDAO<VO> {
 
 	// inserir um produto
 	public void inserir(VO prod) throws IOException {
-		String sql = "insert into produto(descricao, valor, quantidade) values(?,?,?)";
-		PreparedStatement ptst;
 		try {
+			String sql = "insert into produto(descricao, valor, quantidade) values('" + prod.getDescricao()
+					+ "', taxa_produto(" + prod.getValor() + ")," + prod.getQuantidade() + ")";
+			PreparedStatement ptst;
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			ptst.setString(1, prod.getDescricao());
-			ptst.setDouble(2, prod.getValor());
-			ptst.setInt(3, prod.getQuantidade());
-
 			int affectedRows = ptst.executeUpdate();
 
 			if (affectedRows == 0) {
@@ -33,6 +30,21 @@ public class ProdutoDAO<VO extends ProdutoVO> extends BaseDAO<VO> {
 			ex.printStackTrace();
 		}
 	}
+
+	/*
+	 * public void inserir(VO prod) throws IOException { String sql =
+	 * "insert into produto(descricao, valor, quantidade) values(?,taxa_produto(?),?)"
+	 * ; PreparedStatement ptst; try { ptst = getConnection().prepareStatement(sql,
+	 * Statement.RETURN_GENERATED_KEYS); ptst.setString(1, prod.getDescricao());
+	 * ptst.setDouble(2, prod.getValor()); ptst.setInt(3, prod.getQuantidade());
+	 * 
+	 * int affectedRows = ptst.executeUpdate();
+	 * 
+	 * if (affectedRows == 0) { throw new
+	 * SQLException("A inserção falhou. Nenhuma linha foi inserida."); }
+	 * 
+	 * } catch (SQLException ex) { ex.printStackTrace(); } }
+	 */
 
 	// alterar um produto
 	public void alterar(VO prod) throws IOException {

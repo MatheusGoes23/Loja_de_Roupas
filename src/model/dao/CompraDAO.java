@@ -15,13 +15,12 @@ public class CompraDAO<VO extends CompraVO> extends BaseDAO<VO> {
 
 	// inserir uma compra
 	public void inserir(VO comp) throws IOException {
-		String sql = "insert into compra(id_funcionario, id_cliente, valor, data, hora) values(?,?,?, current_date, current_time)";
+		String sql = "insert into compra(id_funcionario, id_cliente, valor, data, hora) values(?,?,0, current_date, current_time)";
 		PreparedStatement ptst;
 		try {
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ptst.setLong(1, comp.getId_Funcionario());
 			ptst.setLong(2, comp.getId_Cliente());
-			ptst.setDouble(3, comp.getValor());
 
 			int affectedRows = ptst.executeUpdate();
 

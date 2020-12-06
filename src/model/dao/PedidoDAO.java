@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.vo.CompraVO;
 import model.vo.PedidoVO;
 
 public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
@@ -21,7 +22,7 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			ptst = getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			ptst.setLong(1, ped.getId_Produto());
 			ptst.setLong(2, ped.getId_Compra());
-			ptst.setDouble(3, ped.getValor());
+			ptst.setDouble(3, ped.getSubtotal());
 			ptst.setInt(4, ped.getQuantidade());
 
 			int affectedRows = ptst.executeUpdate();
@@ -265,7 +266,7 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 
 	// Busca um Produtos comprados por cada cliente pelo nome
 	public ResultSet buscarCompradosByNome(VO ped) throws SQLException, IOException {
-		String sql = "SELECT * FROM produtos_comprados_cliente WHERE nome=?";
+		String sql = "SELECT * FROM produtos_comprados_cliente WHERE Nome_Cliente=?";
 		PreparedStatement ptst;
 		ResultSet resultado = null;
 		try {
@@ -280,7 +281,7 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 
 	// Busca um Produtos comprados por cada cliente pelo cpf
 	public ResultSet buscarCompradosByCpf(VO ped) throws SQLException, IOException {
-		String sql = "SELECT * FROM produtos_comprados_cliente WHERE cpf=?";
+		String sql = "SELECT * FROM produtos_comprados_cliente WHERE Cpf_Cliente=?";
 		PreparedStatement ptst;
 		ResultSet resultado = null;
 		try {
@@ -349,8 +350,10 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			resultado = st.executeQuery(sql);
 			while (resultado.next()) {
 				PedidoVO pedido = new PedidoVO();
-				pedido.setNome(resultado.getString("nome"));
-				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setNome(resultado.getString("Nome_Cliente"));
+				pedido.setCpf(resultado.getString("Cpf_Cliente"));
+				pedido.setLogin(resultado.getString("Nome_Funcionario"));
+				pedido.setSenha(resultado.getString("Cpf_Funcionario"));
 				pedido.setDescricao(resultado.getString("descricao"));
 				pedido.setQuantidade(resultado.getInt("quantidade"));
 				pedido.setValor(resultado.getDouble("valor_total"));
@@ -366,7 +369,7 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 
 	// Pesquisar e retornar um Produtos comprados por cada cliente pelo nome
 	public List<PedidoVO> pesquisarCompradosByNome(VO ped) throws IOException {
-		String sql = "SELECT * FROM produtos_comprados_cliente WHERE nome=? ORDER BY data";
+		String sql = "SELECT * FROM produtos_comprados_cliente WHERE Nome_Cliente=? ORDER BY data";
 		PreparedStatement st;
 		ResultSet resultado = null;
 		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
@@ -376,8 +379,10 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			resultado = st.executeQuery();
 			while (resultado.next()) {
 				PedidoVO pedido = new PedidoVO();
-				pedido.setNome(resultado.getString("nome"));
-				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setNome(resultado.getString("Nome_Cliente"));
+				pedido.setCpf(resultado.getString("Cpf_Cliente"));
+				pedido.setLogin(resultado.getString("Nome_Funcionario"));
+				pedido.setSenha(resultado.getString("Cpf_Funcionario"));
 				pedido.setDescricao(resultado.getString("descricao"));
 				pedido.setQuantidade(resultado.getInt("quantidade"));
 				pedido.setValor(resultado.getDouble("valor_total"));
@@ -393,7 +398,7 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 
 	// Pesquisar e retornar um Produtos comprados por cada cliente pelo cpf
 	public List<PedidoVO> pesquisarCompradosByCpf(VO ped) throws IOException {
-		String sql = "SELECT * FROM produtos_comprados_cliente WHERE cpf=? ORDER BY data";
+		String sql = "SELECT * FROM produtos_comprados_cliente WHERE Cpf_Cliente=? ORDER BY data";
 		PreparedStatement st;
 		ResultSet resultado = null;
 		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
@@ -403,8 +408,10 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			resultado = st.executeQuery();
 			while (resultado.next()) {
 				PedidoVO pedido = new PedidoVO();
-				pedido.setNome(resultado.getString("nome"));
-				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setNome(resultado.getString("Nome_Cliente"));
+				pedido.setCpf(resultado.getString("Cpf_Cliente"));
+				pedido.setLogin(resultado.getString("Nome_Funcionario"));
+				pedido.setSenha(resultado.getString("Cpf_Funcionario"));
 				pedido.setDescricao(resultado.getString("descricao"));
 				pedido.setQuantidade(resultado.getInt("quantidade"));
 				pedido.setValor(resultado.getDouble("valor_total"));
@@ -430,8 +437,10 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			resultado = st.executeQuery();
 			while (resultado.next()) {
 				PedidoVO pedido = new PedidoVO();
-				pedido.setNome(resultado.getString("nome"));
-				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setNome(resultado.getString("Nome_Cliente"));
+				pedido.setCpf(resultado.getString("Cpf_Cliente"));
+				pedido.setLogin(resultado.getString("Nome_Funcionario"));
+				pedido.setSenha(resultado.getString("Cpf_Funcionario"));
 				pedido.setDescricao(resultado.getString("descricao"));
 				pedido.setQuantidade(resultado.getInt("quantidade"));
 				pedido.setValor(resultado.getDouble("valor_total"));
@@ -457,8 +466,10 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			resultado = st.executeQuery();
 			while (resultado.next()) {
 				PedidoVO pedido = new PedidoVO();
-				pedido.setNome(resultado.getString("nome"));
-				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setNome(resultado.getString("Nome_Cliente"));
+				pedido.setCpf(resultado.getString("Cpf_Cliente"));
+				pedido.setLogin(resultado.getString("Nome_Funcionario"));
+				pedido.setSenha(resultado.getString("Cpf_Funcionario"));
 				pedido.setDescricao(resultado.getString("descricao"));
 				pedido.setQuantidade(resultado.getInt("quantidade"));
 				pedido.setValor(resultado.getDouble("valor_total"));
@@ -484,13 +495,231 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 			resultado = st.executeQuery();
 			while (resultado.next()) {
 				PedidoVO pedido = new PedidoVO();
-				pedido.setNome(resultado.getString("nome"));
-				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setNome(resultado.getString("Nome_Cliente"));
+				pedido.setCpf(resultado.getString("Cpf_Cliente"));
+				pedido.setLogin(resultado.getString("Nome_Funcionario"));
+				pedido.setSenha(resultado.getString("Cpf_Funcionario"));
 				pedido.setDescricao(resultado.getString("descricao"));
 				pedido.setQuantidade(resultado.getInt("quantidade"));
 				pedido.setValor(resultado.getDouble("valor_total"));
 				pedido.setData(resultado.getDate("data"));
 				pedido.setHora(resultado.getString("hora"));
+				pedidos.add(pedido);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return pedidos;
+	}
+
+	// listar ex_empregados
+	public List<PedidoVO> listarEx() throws IOException {
+		String sql = "SELECT * FROM ex_empregados ORDER BY data_demissao";
+		Statement st;
+		ResultSet resultado = null;
+		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
+		try {
+			st = getConnection().createStatement();
+			resultado = st.executeQuery(sql);
+			while (resultado.next()) {
+				PedidoVO pedido = new PedidoVO();
+				pedido.setNome(resultado.getString("nome"));
+				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setDescricao(resultado.getString("funcao"));
+				pedido.setData(resultado.getDate("data_demissao"));
+				pedidos.add(pedido);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return pedidos;
+	}
+
+	// Busca os ex_empregados pelo nome
+	public ResultSet buscarExByNome(VO ped) throws SQLException, IOException {
+		String sql = "SELECT * FROM ex_empregados WHERE nome=?";
+		PreparedStatement ptst;
+		ResultSet resultado = null;
+		try {
+			ptst = getConnection().prepareStatement(sql);
+			ptst.setString(1, ped.getNome());
+			resultado = ptst.executeQuery();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return resultado;
+	}
+
+	// Busca os ex_empregados pelo cpf
+	public ResultSet buscarExByCpf(VO ped) throws SQLException, IOException {
+		String sql = "SELECT * FROM ex_empregados WHERE cpf=?";
+		PreparedStatement ptst;
+		ResultSet resultado = null;
+		try {
+			ptst = getConnection().prepareStatement(sql);
+			ptst.setString(1, ped.getCpf());
+			resultado = ptst.executeQuery();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return resultado;
+	}
+
+	// Busca os ex_empregados pela funcao
+	public ResultSet buscarExByFuncao(VO ped) throws SQLException, IOException {
+		String sql = "SELECT * FROM ex_empregados WHERE funcao=?";
+		PreparedStatement ptst;
+		ResultSet resultado = null;
+		try {
+			ptst = getConnection().prepareStatement(sql);
+			ptst.setString(1, ped.getDescricao());
+			resultado = ptst.executeQuery();
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return resultado;
+	}
+
+	// Pesquisar e retornar os ex_empregados pelo nome
+	public List<PedidoVO> pesquisarExByNome(VO ped) throws IOException {
+		String sql = "SELECT * FROM ex_empregados WHERE nome=? ORDER BY data_demissao";
+		PreparedStatement st;
+		ResultSet resultado = null;
+		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
+		try {
+			st = getConnection().prepareStatement(sql);
+			st.setString(1, ped.getNome());
+			resultado = st.executeQuery();
+			while (resultado.next()) {
+				PedidoVO pedido = new PedidoVO();
+				pedido.setNome(resultado.getString("nome"));
+				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setDescricao(resultado.getString("funcao"));
+				pedido.setData(resultado.getDate("data_demissao"));
+				pedidos.add(pedido);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return pedidos;
+	}
+
+	// Pesquisar e retornar os ex_empregados pelo cpf
+	public List<PedidoVO> pesquisarExByCpf(VO ped) throws IOException {
+		String sql = "SELECT * FROM ex_empregados WHERE cpf=? ORDER BY data_demissao";
+		PreparedStatement st;
+		ResultSet resultado = null;
+		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
+		try {
+			st = getConnection().prepareStatement(sql);
+			st.setString(1, ped.getCpf());
+			resultado = st.executeQuery();
+			while (resultado.next()) {
+				PedidoVO pedido = new PedidoVO();
+				pedido.setNome(resultado.getString("nome"));
+				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setDescricao(resultado.getString("funcao"));
+				pedido.setData(resultado.getDate("data_demissao"));
+				pedidos.add(pedido);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return pedidos;
+	}
+
+	// Pesquisar e retornar os ex_empregados pela funcao
+	public List<PedidoVO> pesquisarExByFuncao(VO ped) throws IOException {
+		String sql = "SELECT * FROM ex_empregados WHERE funcao=? ORDER BY data_demissao";
+		PreparedStatement st;
+		ResultSet resultado = null;
+		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
+		try {
+			st = getConnection().prepareStatement(sql);
+			st.setString(1, ped.getDescricao());
+			resultado = st.executeQuery();
+			while (resultado.next()) {
+				PedidoVO pedido = new PedidoVO();
+				pedido.setNome(resultado.getString("nome"));
+				pedido.setCpf(resultado.getString("cpf"));
+				pedido.setDescricao(resultado.getString("funcao"));
+				pedido.setData(resultado.getDate("data_demissao"));
+				pedidos.add(pedido);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return pedidos;
+	}
+
+	// listar arquivo de log de Produtos inseridos, alterados ou deletados
+	public List<PedidoVO> listarProdLog() throws IOException {
+		String sql = "select * from produtos_log ORDER BY data";
+		Statement st;
+		ResultSet resultado = null;
+		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
+		try {
+			st = getConnection().createStatement();
+			resultado = st.executeQuery(sql);
+			while (resultado.next()) {
+				PedidoVO pedido = new PedidoVO();
+				pedido.setDescricao(resultado.getString("descricao"));
+				pedido.setValor(resultado.getDouble("valor"));
+				pedido.setQuantidade(resultado.getInt("quantidade"));
+				pedido.setNome(resultado.getString("modificacao"));
+				pedido.setData(resultado.getDate("data"));
+				pedidos.add(pedido);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		return pedidos;
+	}
+
+	static private CompraDAO<CompraVO> dao = new CompraDAO<CompraVO>();
+
+	public void inserirComp(VO ped) throws IOException {
+		dao.inserir(ped);
+	}
+
+	// inserir um pedido de uma nova compra
+	public void inserirPed(VO ped) throws IOException {
+		// Sabendo qual o id da compra que está aberta
+		List<CompraVO> compras = dao.listar();
+		CompraVO compra = compras.get(compras.size() - 1);
+		ped.setId_Compra(compra.getId_Compra());
+
+		// Calculando o SubTotal do pedido
+		ped.setSubtotal(ped.getValor() * ped.getQuantidade());
+
+		inserir(ped);
+
+		// Atualizar o Total da Compra
+		ped.setValor(ped.getSubtotal() + compra.getValor());
+		dao.alterar(ped);
+	}
+
+	// listar os pedidos de uma nova compra
+	public List<PedidoVO> listarVenda() throws IOException {
+		// Sabendo qual o id da compra que está aberta
+		List<CompraVO> compras = dao.listar();
+		CompraVO compra = compras.get(compras.size() - 1);
+
+		String sql = "SELECT * FROM vendas WHERE Id_Compra=? ORDER BY Id_Pedido";
+		PreparedStatement st;
+		ResultSet resultado = null;
+		List<PedidoVO> pedidos = new ArrayList<PedidoVO>();
+		try {
+			st = getConnection().prepareStatement(sql);
+			st.setLong(1, compra.getId_Compra());
+			resultado = st.executeQuery();
+			while (resultado.next()) {
+				PedidoVO pedido = new PedidoVO();
+				pedido.setId_Pedido(resultado.getLong("Id_Pedido"));
+				pedido.setDescricao(resultado.getString("Descricao"));
+				pedido.setQuantidade(resultado.getInt("Quantidade"));
+				pedido.setValor(resultado.getDouble("Preco_Unitario"));
+				pedido.setSubtotal(resultado.getDouble("Preco_Total"));
 				pedidos.add(pedido);
 			}
 		} catch (SQLException ex) {

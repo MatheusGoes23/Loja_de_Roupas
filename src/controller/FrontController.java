@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
@@ -28,6 +29,8 @@ import model.bo.GerenteBO;
 import model.bo.PedidoBO;
 import model.bo.ProdutoBO;
 import model.bo.ProprietarioBO;
+import model.dao.PedidoDAO;
+import model.dao.ProdutoDAO;
 import model.vo.ClienteVO;
 import model.vo.CompraVO;
 import model.vo.FuncionarioVO;
@@ -48,7 +51,7 @@ public class FrontController implements Initializable {
 	@FXML
 	private Label erroAut;
 
-	// Tela do Proprietário
+	// Telas
 	@FXML
 	private Button menuGerSele;
 	@FXML
@@ -70,6 +73,20 @@ public class FrontController implements Initializable {
 	@FXML
 	private Label barraCompSele;
 	@FXML
+	private Button menuExSele;
+	@FXML
+	private Label barraExSele;
+	@FXML
+	private Button menuVendSele;
+	@FXML
+	private Label barraVendSele;
+	@FXML
+	private Button refreshVend;
+	@FXML
+	private Button menuProdLogSele;
+	@FXML
+	private Label barraProdLogSele;
+	@FXML
 	private Pane paneGer;
 	@FXML
 	private Pane paneFunc;
@@ -80,6 +97,16 @@ public class FrontController implements Initializable {
 	@FXML
 	private Pane paneComp;
 	@FXML
+	private Pane paneEx;
+	@FXML
+	private Pane paneProdLog;
+	@FXML
+	private Pane paneVend;
+	@FXML
+	private Pane paneVender;
+	@FXML
+	private Pane paneVender2;
+	@FXML
 	private Label erroPropGer;
 	@FXML
 	private Label erroPropFunc;
@@ -87,6 +114,8 @@ public class FrontController implements Initializable {
 	private Label erroPropCli;
 	@FXML
 	private Label erroPropProd;
+	@FXML
+	private Label erroVenda;
 
 	// Proprietário/Gerentes
 	@FXML
@@ -210,6 +239,10 @@ public class FrontController implements Initializable {
 	@FXML
 	private TableColumn<PedidoVO, String> tableCpfViewComp;
 	@FXML
+	private TableColumn<PedidoVO, String> tableNome2ViewComp;
+	@FXML
+	private TableColumn<PedidoVO, String> tableCpf2ViewComp;
+	@FXML
 	private TableColumn<PedidoVO, String> tableDescricaoViewComp;
 	@FXML
 	private TableColumn<PedidoVO, Integer> tableQuantidadeViewComp;
@@ -225,17 +258,84 @@ public class FrontController implements Initializable {
 	@FXML
 	private TextField pesquisarViewComp;
 
+	// Proprietário/EX-EMPREGADOS
+	@FXML
+	private TableColumn<PedidoVO, String> tableNomeEx;
+	@FXML
+	private TableColumn<PedidoVO, String> tableCpfEx;
+	@FXML
+	private TableColumn<PedidoVO, String> tableFuncaoEx;
+	@FXML
+	private TableColumn<PedidoVO, Date> tableDataEx;
+	@FXML
+	private TableView<PedidoVO> tableEx;
+
+	@FXML
+	private TextField pesquisarEx;
+
+	// Proprietário/Logs dos Produtos
+
+	@FXML
+	private TableColumn<PedidoVO, String> tableDescricaoProdLog;
+	@FXML
+	private TableColumn<PedidoVO, Double> tableValorProdLog;
+	@FXML
+	private TableColumn<PedidoVO, Integer> tableQuantidadeProdLog;
+	@FXML
+	private TableColumn<PedidoVO, String> tableModificacaoProdLog;
+	@FXML
+	private TableColumn<PedidoVO, Date> tableDataProdLog;
+	@FXML
+	private TableView<PedidoVO> tableProdLog;
+
+	@FXML
+	private TextField pesquisarProdL;
+
+	// Funcionários/Vender
+	@FXML
+	private ComboBox<PedidoVO> selectClienteVenda;
+	@FXML
+	private ComboBox<PedidoVO> selectProdutoVenda;
+	@FXML
+	private TextField quantidadeVenda;
+	@FXML
+	private TextField subtotalVenda;
+	@FXML
+	private TextField totalVenda;
+
+	@FXML
+	private TableColumn<PedidoVO, Long> tableIdPedidoVenda;
+	@FXML
+	private TableColumn<PedidoVO, Long> tableIdCompraVenda;
+	@FXML
+	private TableColumn<PedidoVO, String> tableDescricaoVenda;
+	@FXML
+	private TableColumn<PedidoVO, Integer> tableQuantidadeVenda;
+	@FXML
+	private TableColumn<PedidoVO, Double> tableValorUniVenda;
+	@FXML
+	private TableColumn<PedidoVO, Double> tableTotVenda;
+	@FXML
+	private TableView<PedidoVO> tableVendas;
+
+	@FXML
+	private TextField pesquisarVend;
+
 	// Tabelas
 	private ObservableList<GerenteVO> listaGerentes = FXCollections.observableArrayList();
 	private ObservableList<FuncionarioVO> listaFuncionarios = FXCollections.observableArrayList();
 	private ObservableList<ClienteVO> listaClientes = FXCollections.observableArrayList();
 	private ObservableList<ProdutoVO> listaProdutos = FXCollections.observableArrayList();
 	private ObservableList<PedidoVO> listaViewComp = FXCollections.observableArrayList();
+	private ObservableList<PedidoVO> listaEx = FXCollections.observableArrayList();
+	private ObservableList<PedidoVO> listaProdLog = FXCollections.observableArrayList();
+	private ObservableList<PedidoVO> listaVenda = FXCollections.observableArrayList();
 
 	private static GerenteVO gerenteSelecionado;
 	private static FuncionarioVO funcionarioSelecionado;
 	private static ClienteVO clienteSelecionado;
 	private static ProdutoVO produtoSelecionado;
+	private static PedidoVO vendaSelecionado;
 
 	// ------------------CHAMADAS----------------
 	ProprietarioBO<ProprietarioVO> propbo = new ProprietarioBO<ProprietarioVO>();
@@ -245,6 +345,7 @@ public class FrontController implements Initializable {
 	ClienteBO<ClienteVO> clibo = new ClienteBO<ClienteVO>();
 	CompraBO<CompraVO> compbo = new CompraBO<CompraVO>();
 	PedidoBO<PedidoVO> pedbo = new PedidoBO<PedidoVO>();
+	PedidoDAO<PedidoVO> peddao = new PedidoDAO<PedidoVO>();
 
 	// ------------INICIALIZAÇÃO DE TABELAS E FUNÇÕES------------------
 	public void initialize(URL url, ResourceBundle rb) {
@@ -336,6 +437,23 @@ public class FrontController implements Initializable {
 
 		}
 
+		try {
+			tableEx();
+		} catch (Exception e) {
+
+		}
+
+		try {
+			tableProdLog();
+		} catch (Exception e) {
+
+		}
+
+		try {
+			tableVendas();
+		} catch (Exception e) {
+
+		}
 	}
 
 	// ----------------------INICIO-------------------------
@@ -348,6 +466,7 @@ public class FrontController implements Initializable {
 
 	// ----------------------LOGIN PROPRIETÁRIO-------------------------
 	public static ProprietarioVO propaut;
+	public static FuncionarioVO funcaut;
 
 	public void autenticarProprietario(ActionEvent event) throws Exception {
 		ProprietarioVO vo = new ProprietarioVO();
@@ -370,7 +489,7 @@ public class FrontController implements Initializable {
 		vo.setSenha(senha.getText());
 
 		try {
-			funcbo.autenticar(vo);
+			funcaut = funcbo.autenticar(vo);
 			Telas.telaFuncionarioInicial();
 		} catch (AutenticationException e) {
 			erroAut.setVisible(true);
@@ -1049,8 +1168,10 @@ public class FrontController implements Initializable {
 	// ----------------------PROPRIETÁRIO/GERENTE-------------------------
 
 	public void tableViewComp() throws Exception {
-		tableNomeViewComp.setCellValueFactory(new PropertyValueFactory<>("nome"));
-		tableCpfViewComp.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+		tableNomeViewComp.setCellValueFactory(new PropertyValueFactory<>("login"));
+		tableCpfViewComp.setCellValueFactory(new PropertyValueFactory<>("senha"));
+		tableNome2ViewComp.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		tableCpf2ViewComp.setCellValueFactory(new PropertyValueFactory<>("cpf"));
 		tableDescricaoViewComp.setCellValueFactory(new PropertyValueFactory<>("descricao"));
 		tableQuantidadeViewComp.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
 		tableValorViewComp.setCellValueFactory(new PropertyValueFactory<>("valor"));
@@ -1071,7 +1192,9 @@ public class FrontController implements Initializable {
 		for (int x = 0; x < listaViewComp.size(); x++) {
 			if ((listaViewComp.get(x).getNome().contains(pesquisarViewComp.getText().toUpperCase()))
 					| (listaViewComp.get(x).getCpf().contains(pesquisarViewComp.getText()))
-					| (listaViewComp.get(x).getDescricao().contains(pesquisarViewComp.getText()))
+					| (listaViewComp.get(x).getDescricao().contains(pesquisarViewComp.getText().toUpperCase()))
+					| (listaViewComp.get(x).getLogin().contains(pesquisarViewComp.getText().toUpperCase()))
+					| (listaViewComp.get(x).getSenha().contains(pesquisarViewComp.getText().toUpperCase()))
 					| (String.valueOf(listaViewComp.get(x).getValor()).contains(pesquisarViewComp.getText()))) {
 				viewCompPesquisa.add(listaViewComp.get(x));
 			}
@@ -1086,6 +1209,189 @@ public class FrontController implements Initializable {
 		pesquisarViewComp.setText("");
 	}
 
+	// ----------------------PROPRIETÁRIO-------------------------
+
+	public void tableEx() throws Exception {
+		tableNomeEx.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		tableCpfEx.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+		tableFuncaoEx.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+		tableDataEx.setCellValueFactory(new PropertyValueFactory<>("data"));
+
+		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
+		listaEx = FXCollections.observableList(bo.listarEx());
+		tableEx.setItems(listaEx);
+	}
+
+	public void pesquisarEx(ActionEvent event) throws Exception {
+		tableEx.setItems(pesquisarEx());
+	}
+
+	public ObservableList<PedidoVO> pesquisarEx() {
+		ObservableList<PedidoVO> exPesquisa = FXCollections.observableArrayList();
+		for (int x = 0; x < listaEx.size(); x++) {
+			if ((listaEx.get(x).getNome().contains(pesquisarEx.getText().toUpperCase()))
+					| (listaEx.get(x).getCpf().contains(pesquisarEx.getText()))
+					| (listaEx.get(x).getDescricao().contains(pesquisarEx.getText()))) {
+				exPesquisa.add(listaEx.get(x));
+			}
+		}
+		return exPesquisa;
+	}
+
+	public void refreshTableEx(ActionEvent event) throws Exception {
+		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
+		listaEx = FXCollections.observableList(bo.listarEx());
+		tableEx.setItems(listaEx);
+		pesquisarEx.setText("");
+	}
+
+	// ----------------------PROPRIETÁRIO-------------------------
+
+	public void tableProdLog() throws Exception {
+		tableDescricaoProdLog.setCellValueFactory(new PropertyValueFactory<>("descricao"));
+		tableValorProdLog.setCellValueFactory(new PropertyValueFactory<>("valor"));
+		tableQuantidadeProdLog.setCellValueFactory(new PropertyValueFactory<>("quantidade"));
+		tableModificacaoProdLog.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		tableDataProdLog.setCellValueFactory(new PropertyValueFactory<>("data"));
+
+		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
+		listaProdLog = FXCollections.observableList(bo.listarProdLog());
+		tableProdLog.setItems(listaProdLog);
+	}
+
+	public void pesquisarProdLog(ActionEvent event) throws Exception {
+		tableProdLog.setItems(pesquisarProdLog());
+	}
+
+	public ObservableList<PedidoVO> pesquisarProdLog() {
+		ObservableList<PedidoVO> prodLogPesquisa = FXCollections.observableArrayList();
+		for (int x = 0; x < listaEx.size(); x++) {
+			if ((listaProdLog.get(x).getNome().contains(pesquisarProdL.getText().toUpperCase()))
+					| (String.valueOf(listaProdLog.get(x).getValor()).contains(pesquisarProdL.getText()))
+					| (listaProdLog.get(x).getDescricao().contains(pesquisarProdL.getText()))) {
+				prodLogPesquisa.add(listaProdLog.get(x));
+			}
+		}
+		return prodLogPesquisa;
+	}
+
+	public void refreshTableProdLog(ActionEvent event) throws Exception {
+		PedidoBO<PedidoVO> bo = new PedidoBO<PedidoVO>();
+		listaProdLog = FXCollections.observableList(bo.listarProdLog());
+		tableProdLog.setItems(listaProdLog);
+		pesquisarProdL.setText("");
+	}
+
+	// ----------------------FUNCIONÁRIO-------------------------
+
+	public void tableVendas() throws Exception {
+		tableIdPedidoVenda.setCellValueFactory(new PropertyValueFactory<>("Id_Pedido"));
+		tableIdCompraVenda.setCellValueFactory(new PropertyValueFactory<>("Id_Produto"));
+		tableDescricaoVenda.setCellValueFactory(new PropertyValueFactory<>("Descricao"));
+		tableQuantidadeVenda.setCellValueFactory(new PropertyValueFactory<>("Valor"));
+		tableValorUniVenda.setCellValueFactory(new PropertyValueFactory<>("Quantidade"));
+		tableTotVenda.setCellValueFactory(new PropertyValueFactory<>("Quantidade"));
+
+		PedidoDAO<PedidoVO> dao = new PedidoDAO<PedidoVO>();
+		listaVenda = FXCollections.observableList(dao.listarVenda());
+		tableVendas.setItems(listaVenda);
+	}
+
+	public void pesquisarVenda(ActionEvent event) throws Exception {
+		tableVendas.setItems(pesquisarVenda());
+	}
+
+	public ObservableList<PedidoVO> pesquisarVenda() {
+		ObservableList<PedidoVO> vendaPesquisa = FXCollections.observableArrayList();
+		for (int x = 0; x < listaVenda.size(); x++) {
+			if (listaVenda.get(x).getDescricao().contains(pesquisarProd.getText().toUpperCase())) {
+				vendaPesquisa.add(listaVenda.get(x));
+			}
+		}
+		return vendaPesquisa;
+	}
+
+	public void refreshTableVendas(ActionEvent event) throws Exception {
+		PedidoDAO<PedidoVO> dao = new PedidoDAO<PedidoVO>();
+		listaVenda = FXCollections.observableList(dao.listarVenda());
+		tableVendas.setItems(listaVenda);
+		pesquisarVend.setText("");
+	}
+
+	public void refreshVenda() {
+		selectClienteVenda.getItems().clear();
+		selectProdutoVenda.getItems().clear();
+		quantidadeVenda.setText("");
+		subtotalVenda.setText("");
+		quantidadeProduto.setText("");
+		erroVenda.setVisible(false);
+	}
+
+	public void inserirComp() {
+		PedidoVO vo = new PedidoVO();
+		PedidoVO vo2 = new PedidoVO();
+		ClienteVO vo3;
+
+		try {
+			vo2.setCliente(selectClienteVenda.getSelectionModel().getSelectedItem());
+			vo2.setProduto(selectProdutoVenda.getSelectionModel().getSelectedItem());
+			vo3 = vo2.getCliente();
+
+			vo.setId_Cliente(vo3.getId_Cliente());
+			vo.setNome(vo3.getNome());
+			vo.setCpf(vo3.getCpf());
+			vo.setId_Funcionario(funcaut.getId_Funcionario());
+
+			peddao.inserirComp(vo);
+			refreshVenda();
+		} catch (Exception e) {
+			e.printStackTrace();
+			erroVenda.setText("Erro! Verifique os dados");
+			erroVenda.setVisible(true);
+
+		}
+
+	}
+
+	public void inserirPedido() {
+		PedidoVO vo = new PedidoVO();
+		PedidoVO vo2 = new PedidoVO();
+		ClienteVO vo3;
+		ProdutoVO vo4;
+
+		paneVender.setVisible(false);
+		paneVender2.setVisible(true);
+		refreshVend.setVisible(true);
+
+		try {
+			vo2.setCliente(selectClienteVenda.getSelectionModel().getSelectedItem());
+			vo2.setProduto(selectProdutoVenda.getSelectionModel().getSelectedItem());
+			vo3 = vo2.getCliente();
+			vo4 = vo2.getProduto();
+
+			vo.setId_Cliente(vo3.getId_Cliente());
+			vo.setNome(vo3.getNome());
+			vo.setCpf(vo3.getCpf());
+			vo.setId_Produto(vo4.getId_Produto());
+			vo.setDescricao(vo4.getDescricao());
+			vo.setValor(vo4.getValor());
+			vo.setQuantidade(Integer.parseInt(quantidadeVenda.getText()));
+			vo.setId_Funcionario(funcaut.getId_Funcionario());
+
+			peddao.inserirPed(vo);
+			erroVenda.setVisible(false);
+			selectProdutoVenda.getItems().clear();
+			quantidadeVenda.setText("");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			erroVenda.setText("Erro! Verifique os dados");
+			erroVenda.setVisible(true);
+
+		}
+
+	}
+
 // ----------------------PROPRIETÁRIO/MENU-------------------------
 
 	public void gerentesProprietario(ActionEvent event) throws Exception {
@@ -1094,6 +1400,8 @@ public class FrontController implements Initializable {
 		paneCli.setVisible(false);
 		paneProd.setVisible(false);
 		paneComp.setVisible(false);
+		paneEx.setVisible(false);
+		paneProdLog.setVisible(false);
 		menuGerSele.setTextFill(Color.valueOf("#087326"));
 		barraGerSele.setVisible(true);
 		menuFuncSele.setTextFill(Color.valueOf("black"));
@@ -1104,6 +1412,10 @@ public class FrontController implements Initializable {
 		barraProdSele.setVisible(false);
 		menuCompSele.setTextFill(Color.valueOf("black"));
 		barraCompSele.setVisible(false);
+		menuExSele.setTextFill(Color.valueOf("black"));
+		barraExSele.setVisible(false);
+		menuProdLogSele.setTextFill(Color.valueOf("black"));
+		barraProdLogSele.setVisible(false);
 		loginGerente.setVisible(false);
 		senhaGerente.setVisible(false);
 		loginGerente2.setVisible(true);
@@ -1120,6 +1432,8 @@ public class FrontController implements Initializable {
 		paneCli.setVisible(false);
 		paneProd.setVisible(false);
 		paneComp.setVisible(false);
+		paneEx.setVisible(false);
+		paneProdLog.setVisible(false);
 		menuGerSele.setTextFill(Color.valueOf("black"));
 		barraGerSele.setVisible(false);
 		menuFuncSele.setTextFill(Color.valueOf("#087326"));
@@ -1130,6 +1444,10 @@ public class FrontController implements Initializable {
 		barraProdSele.setVisible(false);
 		menuCompSele.setTextFill(Color.valueOf("black"));
 		barraCompSele.setVisible(false);
+		menuExSele.setTextFill(Color.valueOf("black"));
+		barraExSele.setVisible(false);
+		menuProdLogSele.setTextFill(Color.valueOf("black"));
+		barraProdLogSele.setVisible(false);
 		erroPropFunc.setVisible(false);
 		refreshTableFuncionario(null);
 		refreshFuncionario();
@@ -1142,6 +1460,8 @@ public class FrontController implements Initializable {
 		paneCli.setVisible(true);
 		paneProd.setVisible(false);
 		paneComp.setVisible(false);
+		paneEx.setVisible(false);
+		paneProdLog.setVisible(false);
 		menuGerSele.setTextFill(Color.valueOf("black"));
 		barraGerSele.setVisible(false);
 		menuFuncSele.setTextFill(Color.valueOf("black"));
@@ -1153,6 +1473,10 @@ public class FrontController implements Initializable {
 		menuCompSele.setTextFill(Color.valueOf("black"));
 		barraCompSele.setVisible(false);
 		erroPropCli.setVisible(false);
+		menuExSele.setTextFill(Color.valueOf("black"));
+		barraExSele.setVisible(false);
+		menuProdLogSele.setTextFill(Color.valueOf("black"));
+		barraProdLogSele.setVisible(false);
 		refreshTableCliente(null);
 		refreshCliente();
 		pesquisarCli.setText("");
@@ -1164,6 +1488,8 @@ public class FrontController implements Initializable {
 		paneCli.setVisible(false);
 		paneProd.setVisible(true);
 		paneComp.setVisible(false);
+		paneEx.setVisible(false);
+		paneProdLog.setVisible(false);
 		menuGerSele.setTextFill(Color.valueOf("black"));
 		barraGerSele.setVisible(false);
 		menuFuncSele.setTextFill(Color.valueOf("black"));
@@ -1174,6 +1500,10 @@ public class FrontController implements Initializable {
 		barraProdSele.setVisible(true);
 		menuCompSele.setTextFill(Color.valueOf("black"));
 		barraCompSele.setVisible(false);
+		menuExSele.setTextFill(Color.valueOf("black"));
+		barraExSele.setVisible(false);
+		menuProdLogSele.setTextFill(Color.valueOf("black"));
+		barraProdLogSele.setVisible(false);
 		refreshTableProduto(null);
 		refreshProduto();
 		pesquisarProd.setText("");
@@ -1185,6 +1515,8 @@ public class FrontController implements Initializable {
 		paneCli.setVisible(false);
 		paneProd.setVisible(false);
 		paneComp.setVisible(true);
+		paneEx.setVisible(false);
+		paneProdLog.setVisible(false);
 		menuGerSele.setTextFill(Color.valueOf("black"));
 		barraGerSele.setVisible(false);
 		menuFuncSele.setTextFill(Color.valueOf("black"));
@@ -1195,8 +1527,64 @@ public class FrontController implements Initializable {
 		barraProdSele.setVisible(false);
 		menuCompSele.setTextFill(Color.valueOf("#087326"));
 		barraCompSele.setVisible(true);
+		menuExSele.setTextFill(Color.valueOf("black"));
+		barraExSele.setVisible(false);
+		menuProdLogSele.setTextFill(Color.valueOf("black"));
+		barraProdLogSele.setVisible(false);
 		refreshTableViewComp(null);
 		pesquisarViewComp.setText("");
+	}
+
+	public void exEmpregadosProprietario(ActionEvent event) throws Exception {
+		paneGer.setVisible(false);
+		paneFunc.setVisible(false);
+		paneCli.setVisible(false);
+		paneProd.setVisible(false);
+		paneComp.setVisible(false);
+		paneEx.setVisible(true);
+		paneProdLog.setVisible(false);
+		menuGerSele.setTextFill(Color.valueOf("black"));
+		barraGerSele.setVisible(false);
+		menuFuncSele.setTextFill(Color.valueOf("black"));
+		barraFuncSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		menuCompSele.setTextFill(Color.valueOf("black"));
+		barraCompSele.setVisible(false);
+		menuExSele.setTextFill(Color.valueOf("#087326"));
+		barraExSele.setVisible(true);
+		menuProdLogSele.setTextFill(Color.valueOf("black"));
+		barraProdLogSele.setVisible(false);
+		refreshTableEx(null);
+		pesquisarEx.setText("");
+	}
+
+	public void prodLogProprietario(ActionEvent event) throws Exception {
+		paneGer.setVisible(false);
+		paneFunc.setVisible(false);
+		paneCli.setVisible(false);
+		paneProd.setVisible(false);
+		paneComp.setVisible(false);
+		paneEx.setVisible(false);
+		paneProdLog.setVisible(true);
+		menuGerSele.setTextFill(Color.valueOf("black"));
+		barraGerSele.setVisible(false);
+		menuFuncSele.setTextFill(Color.valueOf("black"));
+		barraFuncSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		menuCompSele.setTextFill(Color.valueOf("black"));
+		barraCompSele.setVisible(false);
+		menuExSele.setTextFill(Color.valueOf("black"));
+		barraExSele.setVisible(false);
+		menuProdLogSele.setTextFill(Color.valueOf("#087326"));
+		barraProdLogSele.setVisible(true);
+		refreshTableProdLog(null);
+		pesquisarProdL.setText("");
 	}
 
 	// ----------------------GERENTE/MENU-------------------------
@@ -1272,6 +1660,53 @@ public class FrontController implements Initializable {
 		barraCompSele.setVisible(true);
 		refreshTableViewComp(null);
 		pesquisarViewComp.setText("");
+	}
+
+	// ----------------------FUNCIONÁRIO/MENU-------------------------
+
+	public void vendasFuncionario(ActionEvent event) throws Exception {
+		paneVend.setVisible(true);
+		paneCli.setVisible(false);
+		paneProd.setVisible(false);
+		menuVendSele.setTextFill(Color.valueOf("#087326"));
+		barraVendSele.setVisible(true);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		refreshTableVendas(null);
+		pesquisarVend.setText("");
+	}
+
+	public void clientesFuncionario(ActionEvent event) throws Exception {
+		paneVend.setVisible(false);
+		paneCli.setVisible(true);
+		paneProd.setVisible(false);
+		menuVendSele.setTextFill(Color.valueOf("black"));
+		barraVendSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("#087326"));
+		barraCliSele.setVisible(true);
+		menuProdSele.setTextFill(Color.valueOf("black"));
+		barraProdSele.setVisible(false);
+		erroPropCli.setVisible(false);
+		refreshTableCliente(null);
+		refreshCliente();
+		pesquisarCli.setText("");
+	}
+
+	public void produtosFuncionario(ActionEvent event) throws Exception {
+		paneVend.setVisible(false);
+		paneCli.setVisible(false);
+		paneProd.setVisible(true);
+		menuVendSele.setTextFill(Color.valueOf("black"));
+		barraVendSele.setVisible(false);
+		menuCliSele.setTextFill(Color.valueOf("black"));
+		barraCliSele.setVisible(false);
+		menuProdSele.setTextFill(Color.valueOf("#087326"));
+		barraProdSele.setVisible(true);
+		refreshTableProduto(null);
+		refreshProduto();
+		pesquisarProd.setText("");
 	}
 
 	// ------------------------------TELAS-----------------------------------
