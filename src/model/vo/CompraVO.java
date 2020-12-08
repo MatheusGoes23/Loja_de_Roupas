@@ -3,7 +3,6 @@ package model.vo;
 import java.sql.Date;
 
 public class CompraVO extends ClienteVO {
-
 	private Long Id_Compra;
 	private Date Data;
 	private String Hora;

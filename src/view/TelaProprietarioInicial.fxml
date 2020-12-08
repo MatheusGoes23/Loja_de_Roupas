@@ -183,6 +183,15 @@
                   </Label>
                </children>
             </Pane>
+            <Button layoutX="1297.0" mnemonicParsing="false" onAction="#imprimirGerentes" prefHeight="9.0" prefWidth="15.0" style="-fx-background-color: #ebeef3;">
+               <graphic>
+                  <ImageView fitHeight="43.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../VE/impressão.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </Pane>
       <Pane fx:id="paneFunc" layoutY="88.0" prefHeight="617.0" prefWidth="1370.0" style="-fx-background-color: #ebeef3;" visible="false">

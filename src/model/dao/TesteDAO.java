@@ -410,15 +410,19 @@ public class TesteDAO {
 		ped.setDescricao("Blusa Masculina Grande");
 		ped.setValor(30.0);
 		ped.setQuantidade(3);
-		
-		//peddao.inserirComp(ped);
-		//peddao.inserirPed(ped);
 
+		//peddao.inserirComp(ped);
+		peddao.inserirPed(ped);
+
+		CompraDAO<CompraVO> compdao = new CompraDAO<CompraVO>();
+		// Sabendo qual o id da compra que está aberta
+				List<CompraVO> compras = compdao.listar();
+				CompraVO compra = compras.get(compras.size() - 1);
 		// --------Listar PEDIDOS NA TELA DE VENDER---------
 		List<PedidoVO> produtos = peddao.listarVenda();
 		for (PedidoVO prod1 : produtos) {
 			System.out.println(prod1.getId_Pedido() + "\t" + prod1.getDescricao() + "\t" + prod1.getQuantidade() + "\t"
-					+ prod1.getValor() + "\t" + prod1.getSubtotal());
+					+ prod1.getValor() + "\t" + prod1.getSubtotal() + "\t" + compra.getValor());
 		}
 	}
 }

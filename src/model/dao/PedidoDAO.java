@@ -687,16 +687,20 @@ public class PedidoDAO<VO extends PedidoVO> extends BaseDAO<VO> {
 		// Sabendo qual o id da compra que está aberta
 		List<CompraVO> compras = dao.listar();
 		CompraVO compra = compras.get(compras.size() - 1);
+
 		ped.setId_Compra(compra.getId_Compra());
 
 		// Calculando o SubTotal do pedido
 		ped.setSubtotal(ped.getValor() * ped.getQuantidade());
+		Double valor = ped.getSubtotal();
 
 		inserir(ped);
 
 		// Atualizar o Total da Compra
-		ped.setValor(ped.getSubtotal() + compra.getValor());
-		dao.alterar(ped);
+		compra.setId_Compra(compra.getId_Compra());
+		compra.setId_Cliente(compra.getId_Cliente());
+		compra.setValor(valor + compra.getValor());
+		dao.alterar(compra);
 	}
 
 	// listar os pedidos de uma nova compra

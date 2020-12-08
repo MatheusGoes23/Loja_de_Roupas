@@ -4,8 +4,6 @@ public class PedidoVO extends CompraVO {
 	private Long Id_Pedido;
 	private Double Subtotal;
 	private Double Total;
-	private ProdutoVO Produto;
-	private ClienteVO Cliente;
 
 	// Métodos Getters e Setters
 	public Long getId_Pedido() {
@@ -32,19 +30,4 @@ public class PedidoVO extends CompraVO {
 		this.Total = total;
 	}
 
-	public ProdutoVO getProduto() {
-		return Produto;
-	}
-
-	public void setProduto(ProdutoVO produto) {
-		Produto = produto;
-	}
-
-	public ClienteVO getCliente() {
-		return Cliente;
-	}
-
-	public void setCliente(ClienteVO cliente) {
-		Cliente = cliente;
-	}
 }

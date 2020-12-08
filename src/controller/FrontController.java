@@ -1,9 +1,14 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 import exception.AutenticationException;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -29,8 +34,8 @@ import model.bo.GerenteBO;
 import model.bo.PedidoBO;
 import model.bo.ProdutoBO;
 import model.bo.ProprietarioBO;
+import model.dao.BaseDAO;
 import model.dao.PedidoDAO;
-import model.dao.ProdutoDAO;
 import model.vo.ClienteVO;
 import model.vo.CompraVO;
 import model.vo.FuncionarioVO;
@@ -38,9 +43,11 @@ import model.vo.GerenteVO;
 import model.vo.PedidoVO;
 import model.vo.ProdutoVO;
 import model.vo.ProprietarioVO;
+
+import net.sf.jasperreports.view.JasperViewer;
 import view.Telas;
 
-public class FrontController implements Initializable {
+public class FrontController extends BaseDAO implements Initializable {
 	// Variáveis FXML
 
 	// Tela de Login
@@ -84,6 +91,8 @@ public class FrontController implements Initializable {
 	private Button refreshVend;
 	@FXML
 	private Button menuProdLogSele;
+	@FXML
+	private Button buttonInserirComp;
 	@FXML
 	private Label barraProdLogSele;
 	@FXML
@@ -293,9 +302,9 @@ public class FrontController implements Initializable {
 
 	// Funcionários/Vender
 	@FXML
-	private ComboBox<PedidoVO> selectClienteVenda;
+	private ComboBox<ClienteVO> selectClienteVenda;
 	@FXML
-	private ComboBox<PedidoVO> selectProdutoVenda;
+	private ComboBox<ProdutoVO> selectProdutoVenda;
 	@FXML
 	private TextField quantidadeVenda;
 	@FXML
@@ -319,7 +328,52 @@ public class FrontController implements Initializable {
 	private TableView<PedidoVO> tableVendas;
 
 	@FXML
+	private TextField idClienteVenda;
+	@FXML
+	private TextField nomeClienteVenda;
+	@FXML
+	private TextField cpfClienteVenda;
+	@FXML
 	private TextField pesquisarVend;
+	@FXML
+	private Button pesquisarVendaButton;
+
+	@FXML
+	private TableColumn<ClienteVO, Long> tableIdCliVenda;
+	@FXML
+	private TableColumn<ClienteVO, String> tableNomeClienteVenda;
+	@FXML
+	private TableColumn<ClienteVO, String> tableCpfClienteVenda;
+	@FXML
+	private TableView<ClienteVO> tableClientesVenda;
+
+	@FXML
+	private TextField idProdutoVenda;
+	@FXML
+	private TextField descricaoProdutoVenda;
+	@FXML
+	private TextField valorProdutoVenda;
+	@FXML
+	private TextField quantidadeProdutoVenda;
+	@FXML
+	private TextField pesquisarClienteVend;
+	@FXML
+	private Button pesquisarClienteVendaButton;
+
+	@FXML
+	private TableColumn<ProdutoVO, Long> tableIdProdVenda;
+	@FXML
+	private TableColumn<ProdutoVO, String> tableDescricaoProdutoVenda;
+	@FXML
+	private TableColumn<ProdutoVO, Double> tableValorProdutoVenda;
+	@FXML
+	private TableColumn<ProdutoVO, Integer> tableQuantidadeProdutoVenda;
+	@FXML
+	private TableView<ProdutoVO> tableProdutosVenda;
+	@FXML
+	private TextField pesquisarProdutoVend;
+	@FXML
+	private Button pesquisarProdutoVendaButton;
 
 	// Tabelas
 	private ObservableList<GerenteVO> listaGerentes = FXCollections.observableArrayList();
@@ -335,7 +389,6 @@ public class FrontController implements Initializable {
 	private static FuncionarioVO funcionarioSelecionado;
 	private static ClienteVO clienteSelecionado;
 	private static ProdutoVO produtoSelecionado;
-	private static PedidoVO vendaSelecionado;
 
 	// ------------------CHAMADAS----------------
 	ProprietarioBO<ProprietarioVO> propbo = new ProprietarioBO<ProprietarioVO>();
@@ -454,6 +507,44 @@ public class FrontController implements Initializable {
 		} catch (Exception e) {
 
 		}
+
+		try {
+			tableClientesVenda();
+
+			tableClientesVenda.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+					clienteSelecionado = (ClienteVO) newValue;
+					idClienteVenda.setText(String.valueOf(clienteSelecionado.getId_Cliente()));
+					nomeClienteVenda.setText(clienteSelecionado.getNome());
+					cpfClienteVenda.setText(clienteSelecionado.getCpf());
+
+				}
+			});
+		} catch (Exception e) {
+
+		}
+
+		try {
+			tableProdutosVenda();
+
+			tableProdutosVenda.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Object> observable, Object oldValue, Object newValue) {
+					produtoSelecionado = (ProdutoVO) newValue;
+					idProdutoVenda.setText(String.valueOf(produtoSelecionado.getId_Produto()));
+					descricaoProdutoVenda.setText(produtoSelecionado.getDescricao());
+					valorProdutoVenda.setText(String.valueOf(produtoSelecionado.getValor()));
+					quantidadeProdutoVenda.setText(String.valueOf(produtoSelecionado.getQuantidade()));
+
+				}
+			});
+		} catch (Exception e) {
+
+		}
+
 	}
 
 	// ----------------------INICIO-------------------------
@@ -686,6 +777,22 @@ public class FrontController implements Initializable {
 
 			}
 
+		}
+	}
+
+	public void imprimirGerentes(ActionEvent event) {
+		int confirma = JOptionPane.showConfirmDialog(null, "Confirma a impressão da lista dos gerentes?", "Atenção",
+				JOptionPane.YES_NO_OPTION);
+		if (confirma == JOptionPane.YES_OPTION) {
+			// IMPRIMINDO O RELATÓRIO
+			try {
+				JasperPrint print = JasperFillManager.fillReport(
+						"C:/Users/Matheus/repositorios/Loja_de_Roupas/src/resources/Reports/Gerentes.jasper", null,
+						getConnection());
+				JasperViewer.viewReport(print, false);
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, e);
+			}
 		}
 	}
 
@@ -930,7 +1037,7 @@ public class FrontController implements Initializable {
 				nomeCliente.setText("");
 				cpfCliente.setText("");
 
-				clientesProprietario(null);
+				clientesFuncionario(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 				erroPropCli.setText("Erro! Verifique os dados");
@@ -962,7 +1069,7 @@ public class FrontController implements Initializable {
 				nomeCliente.setText("");
 				cpfCliente.setText("");
 
-				clientesProprietario(null);
+				clientesFuncionario(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 				erroPropCli.setText("Erro! Verifique os dados");
@@ -992,7 +1099,7 @@ public class FrontController implements Initializable {
 				nomeCliente.setText("");
 				cpfCliente.setText("");
 
-				clientesProprietario(null);
+				clientesFuncionario(null);
 			} catch (Exception e) {
 				e.printStackTrace();
 				erroPropCli.setText("Erro! Verifique os dados");
@@ -1288,13 +1395,34 @@ public class FrontController implements Initializable {
 		tableIdPedidoVenda.setCellValueFactory(new PropertyValueFactory<>("Id_Pedido"));
 		tableIdCompraVenda.setCellValueFactory(new PropertyValueFactory<>("Id_Produto"));
 		tableDescricaoVenda.setCellValueFactory(new PropertyValueFactory<>("Descricao"));
-		tableQuantidadeVenda.setCellValueFactory(new PropertyValueFactory<>("Valor"));
-		tableValorUniVenda.setCellValueFactory(new PropertyValueFactory<>("Quantidade"));
-		tableTotVenda.setCellValueFactory(new PropertyValueFactory<>("Quantidade"));
+		tableQuantidadeVenda.setCellValueFactory(new PropertyValueFactory<>("Quantidade"));
+		tableValorUniVenda.setCellValueFactory(new PropertyValueFactory<>("Valor"));
+		tableTotVenda.setCellValueFactory(new PropertyValueFactory<>("Subtotal"));
 
 		PedidoDAO<PedidoVO> dao = new PedidoDAO<PedidoVO>();
 		listaVenda = FXCollections.observableList(dao.listarVenda());
 		tableVendas.setItems(listaVenda);
+	}
+
+	public void tableClientesVenda() throws Exception {
+		tableIdCliVenda.setCellValueFactory(new PropertyValueFactory<>("Id_Cliente"));
+		tableNomeClienteVenda.setCellValueFactory(new PropertyValueFactory<>("nome"));
+		tableCpfClienteVenda.setCellValueFactory(new PropertyValueFactory<>("cpf"));
+
+		ClienteBO<ClienteVO> bo = new ClienteBO<ClienteVO>();
+		listaClientes = FXCollections.observableList(bo.listar());
+		tableClientesVenda.setItems(listaClientes);
+	}
+
+	public void tableProdutosVenda() throws Exception {
+		tableIdProdVenda.setCellValueFactory(new PropertyValueFactory<>("Id_Produto"));
+		tableDescricaoProdutoVenda.setCellValueFactory(new PropertyValueFactory<>("Descricao"));
+		tableValorProdutoVenda.setCellValueFactory(new PropertyValueFactory<>("Valor"));
+		tableQuantidadeProdutoVenda.setCellValueFactory(new PropertyValueFactory<>("Quantidade"));
+
+		ProdutoBO<ProdutoVO> bo = new ProdutoBO<ProdutoVO>();
+		listaProdutos = FXCollections.observableList(bo.listar());
+		tableProdutosVenda.setItems(listaProdutos);
 	}
 
 	public void pesquisarVenda(ActionEvent event) throws Exception {
@@ -1304,11 +1432,34 @@ public class FrontController implements Initializable {
 	public ObservableList<PedidoVO> pesquisarVenda() {
 		ObservableList<PedidoVO> vendaPesquisa = FXCollections.observableArrayList();
 		for (int x = 0; x < listaVenda.size(); x++) {
-			if (listaVenda.get(x).getDescricao().contains(pesquisarProd.getText().toUpperCase())) {
+			if ((listaVenda.get(x).getDescricao().contains(pesquisarVend.getText().toUpperCase()))
+					| (String.valueOf(listaVenda.get(x).getValor()).contains(pesquisarVend.getText()))) {
 				vendaPesquisa.add(listaVenda.get(x));
 			}
 		}
 		return vendaPesquisa;
+	}
+
+	public ObservableList<ProdutoVO> pesquisarProdutoVenda() {
+		ObservableList<ProdutoVO> produtoVendaPesquisa = FXCollections.observableArrayList();
+		for (int x = 0; x < listaProdutos.size(); x++) {
+			if ((listaProdutos.get(x).getDescricao().contains(pesquisarProdutoVend.getText().toUpperCase()))
+					| (String.valueOf(listaProdutos.get(x).getValor()).contains(pesquisarProdutoVend.getText()))) {
+				produtoVendaPesquisa.add(listaProdutos.get(x));
+			}
+		}
+		return produtoVendaPesquisa;
+	}
+
+	public ObservableList<ClienteVO> pesquisarClienteVenda() {
+		ObservableList<ClienteVO> clienteVendaPesquisa = FXCollections.observableArrayList();
+		for (int x = 0; x < listaProdutos.size(); x++) {
+			if ((listaClientes.get(x).getDescricao().contains(pesquisarClienteVend.getText().toUpperCase()))
+					| (String.valueOf(listaClientes.get(x).getValor()).contains(pesquisarClienteVend.getText()))) {
+				clienteVendaPesquisa.add(listaClientes.get(x));
+			}
+		}
+		return clienteVendaPesquisa;
 	}
 
 	public void refreshTableVendas(ActionEvent event) throws Exception {
@@ -1316,34 +1467,55 @@ public class FrontController implements Initializable {
 		listaVenda = FXCollections.observableList(dao.listarVenda());
 		tableVendas.setItems(listaVenda);
 		pesquisarVend.setText("");
+
+		ClienteBO<ClienteVO> bo = new ClienteBO<ClienteVO>();
+		listaClientes = FXCollections.observableList(bo.listar());
+		tableClientesVenda.setItems(listaClientes);
+		pesquisarCli.setText("");
+
+		ProdutoBO<ProdutoVO> pbo = new ProdutoBO<ProdutoVO>();
+		listaProdutos = FXCollections.observableList(pbo.listar());
+		tableProdutosVenda.setItems(listaProdutos);
+		pesquisarProd.setText("");
 	}
 
 	public void refreshVenda() {
-		selectClienteVenda.getItems().clear();
-		selectProdutoVenda.getItems().clear();
+		nomeClienteVenda.setText("");
 		quantidadeVenda.setText("");
 		subtotalVenda.setText("");
-		quantidadeProduto.setText("");
+		totalVenda.setText("");
+		descricaoProdutoVenda.setText("");
 		erroVenda.setVisible(false);
 	}
 
 	public void inserirComp() {
-		PedidoVO vo = new PedidoVO();
-		PedidoVO vo2 = new PedidoVO();
-		ClienteVO vo3;
-
+		PedidoVO ped = new PedidoVO();
 		try {
-			vo2.setCliente(selectClienteVenda.getSelectionModel().getSelectedItem());
-			vo2.setProduto(selectProdutoVenda.getSelectionModel().getSelectedItem());
-			vo3 = vo2.getCliente();
+			if (nomeClienteVenda.getText().isEmpty()) {
+				erroVenda.setText("Selecione um cliente!");
+				erroVenda.setVisible(true);
+			} else {
+				ped.setId_Funcionario(funcaut.getId_Funcionario());
+				ped.setId_Cliente(Long.parseLong(idClienteVenda.getText()));
+				ped.setNome(nomeClienteVenda.getText());
+				ped.setCpf(cpfClienteVenda.getText());
+				System.out.println(ped.getId_Cliente() + " " + ped.getNome() + " " + ped.getCpf());
+				peddao.inserirComp(ped);
 
-			vo.setId_Cliente(vo3.getId_Cliente());
-			vo.setNome(vo3.getNome());
-			vo.setCpf(vo3.getCpf());
-			vo.setId_Funcionario(funcaut.getId_Funcionario());
+				tableClientesVenda.setVisible(false);
+				tableProdutosVenda.setVisible(true);
+				tableVendas.setVisible(false);
+				buttonInserirComp.setDisable(true);
+				erroVenda.setVisible(false);
+				refreshTableVendas(null);
 
-			peddao.inserirComp(vo);
-			refreshVenda();
+				pesquisarVend.setVisible(false);
+				pesquisarVendaButton.setVisible(false);
+				pesquisarProdutoVend.setVisible(true);
+				pesquisarProdutoVendaButton.setVisible(true);
+				pesquisarClienteVend.setVisible(false);
+				pesquisarClienteVendaButton.setVisible(false);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			erroVenda.setText("Erro! Verifique os dados");
@@ -1354,42 +1526,154 @@ public class FrontController implements Initializable {
 	}
 
 	public void inserirPedido() {
+
+		PedidoVO ped = new PedidoVO();
 		PedidoVO vo = new PedidoVO();
-		PedidoVO vo2 = new PedidoVO();
-		ClienteVO vo3;
-		ProdutoVO vo4;
-
-		paneVender.setVisible(false);
-		paneVender2.setVisible(true);
-		refreshVend.setVisible(true);
-
 		try {
-			vo2.setCliente(selectClienteVenda.getSelectionModel().getSelectedItem());
-			vo2.setProduto(selectProdutoVenda.getSelectionModel().getSelectedItem());
-			vo3 = vo2.getCliente();
-			vo4 = vo2.getProduto();
+			if (nomeClienteVenda.getText().isEmpty()) {
+				erroVenda.setText("Selecione um cliente!");
+				erroVenda.setVisible(true);
+			} else if (descricaoProdutoVenda.getText().isEmpty()) {
+				erroVenda.setText("Selecione um produto!");
+				erroVenda.setVisible(true);
+			} else if (quantidadeVenda.getText().isEmpty()) {
+				erroVenda.setText("Digite a quantidade de produtos!");
+				erroVenda.setVisible(true);
+			} else if (Integer.parseInt(quantidadeVenda.getText()) > Integer
+					.parseInt(quantidadeProdutoVenda.getText())) {
+				erroVenda.setText("Só há " + quantidadeProdutoVenda.getText() + " unidades desse produto!");
+				erroVenda.setVisible(true);
+			} else {
+				ped.setId_Funcionario(funcaut.getId_Funcionario());
+				ped.setId_Cliente(Long.parseLong(idClienteVenda.getText()));
+				ped.setNome(nomeClienteVenda.getText());
+				ped.setCpf(cpfClienteVenda.getText());
+				ped.setId_Produto(Long.parseLong(idProdutoVenda.getText()));
+				ped.setDescricao(descricaoProdutoVenda.getText());
+				ped.setValor(Double.parseDouble(valorProdutoVenda.getText()));
+				ped.setQuantidade(Integer.parseInt(quantidadeVenda.getText()));
 
-			vo.setId_Cliente(vo3.getId_Cliente());
-			vo.setNome(vo3.getNome());
-			vo.setCpf(vo3.getCpf());
-			vo.setId_Produto(vo4.getId_Produto());
-			vo.setDescricao(vo4.getDescricao());
-			vo.setValor(vo4.getValor());
-			vo.setQuantidade(Integer.parseInt(quantidadeVenda.getText()));
-			vo.setId_Funcionario(funcaut.getId_Funcionario());
+				peddao.inserirPed(ped);
 
-			peddao.inserirPed(vo);
-			erroVenda.setVisible(false);
-			selectProdutoVenda.getItems().clear();
-			quantidadeVenda.setText("");
+				vo.setId_Produto(ped.getId_Produto());
+				vo.setDescricao(ped.getDescricao());
+				vo.setValor(ped.getValor());
+				vo.setQuantidade(Integer.parseInt(quantidadeProdutoVenda.getText()) - ped.getQuantidade());
+				prodbo.alterar(vo);
 
+				// Sabendo qual o id da compra que está aberta
+				List<CompraVO> compras = compbo.listar();
+				CompraVO compra = compras.get(compras.size() - 1);
+
+				subtotalVenda.setText(valorProdutoVenda.getText());
+				totalVenda.setText(String.valueOf(compra.getValor()));
+				tableClientesVenda.setVisible(false);
+				tableProdutosVenda.setVisible(false);
+				tableVendas.setVisible(true);
+				refreshTableVendas(null);
+				erroVenda.setVisible(false);
+
+				pesquisarVend.setVisible(true);
+				pesquisarVendaButton.setVisible(true);
+				pesquisarProdutoVend.setVisible(false);
+				pesquisarProdutoVendaButton.setVisible(false);
+				pesquisarClienteVend.setVisible(false);
+				pesquisarClienteVendaButton.setVisible(false);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			erroVenda.setText("Erro! Verifique os dados");
 			erroVenda.setVisible(true);
 
 		}
+	}
 
+	public void pagarVenda(ActionEvent event) {
+
+		try {
+			int confirma = JOptionPane.showConfirmDialog(null, "CONFIRMA O PAGAMENTO?", "ATENÇÃO!",
+					JOptionPane.YES_NO_OPTION);
+			if (confirma == JOptionPane.YES_OPTION) {
+				tableClientesVenda.setVisible(true);
+				tableProdutosVenda.setVisible(false);
+				tableVendas.setVisible(false);
+				refreshVenda();
+				nomeClienteVenda.setText("");
+				buttonInserirComp.setDisable(false);
+				pesquisarVend.setVisible(false);
+				pesquisarVendaButton.setVisible(false);
+				pesquisarProdutoVend.setVisible(false);
+				pesquisarProdutoVendaButton.setVisible(false);
+				pesquisarClienteVend.setVisible(true);
+				pesquisarClienteVendaButton.setVisible(true);
+			}
+
+		} catch (Exception e) {
+			erroVenda.setText("Erro! Compra inválida");
+			erroVenda.setVisible(true);
+		}
+
+	}
+
+	public void cancelarVenda(ActionEvent event) {
+		int confirma = JOptionPane.showConfirmDialog(null, "CONFIRMA O CANCELAMENTO?", "ATENÇÃO!",
+				JOptionPane.YES_NO_OPTION);
+		if (confirma == JOptionPane.YES_OPTION) {
+			try {
+				// Sabendo qual o id da compra que está aberta
+				List<CompraVO> compras = compbo.listar();
+				CompraVO compra = compras.get(compras.size() - 1);
+				if (Long.parseLong(idClienteVenda.getText()) == compra.getId_Cliente()) {
+					compbo.remover(compra);
+					tableClientesVenda.setVisible(true);
+					tableProdutosVenda.setVisible(false);
+					tableVendas.setVisible(false);
+					refreshVenda();
+					buttonInserirComp.setDisable(false);
+					nomeClienteVenda.setText("");
+					pesquisarVend.setVisible(false);
+					pesquisarVendaButton.setVisible(false);
+					pesquisarProdutoVend.setVisible(false);
+					pesquisarProdutoVendaButton.setVisible(false);
+					pesquisarClienteVend.setVisible(true);
+					pesquisarClienteVendaButton.setVisible(true);
+				} else {
+					erroVenda.setText("Essa compra não existe!");
+					erroVenda.setVisible(true);
+				}
+			} catch (Exception e) {
+				erroVenda.setText("Essa compra não existe!");
+				erroVenda.setVisible(true);
+			}
+		}
+	}
+
+	public void verProdutos() {
+		tableClientesVenda.setVisible(false);
+		tableProdutosVenda.setVisible(true);
+		tableVendas.setVisible(false);
+		descricaoProdutoVenda.setText("");
+		quantidadeVenda.setText("");
+		buttonInserirComp.setDisable(false);
+		pesquisarVend.setVisible(false);
+		pesquisarVendaButton.setVisible(false);
+		pesquisarProdutoVend.setVisible(true);
+		pesquisarProdutoVendaButton.setVisible(true);
+		pesquisarClienteVend.setVisible(false);
+		pesquisarClienteVendaButton.setVisible(false);
+	}
+
+	public static String pdfCpfCliente() throws IOException {
+		// String cpf = cpfClienteVenda.getText();
+		String cpf = "12345678910";
+
+		String bloco1 = cpf.substring(0, 3);
+		String bloco2 = cpf.substring(3, 6);
+		String bloco3 = cpf.substring(6, 9);
+		String bloco4 = cpf.substring(9, 11);
+
+		cpf = bloco1 + "." + bloco2 + "." + bloco3 + "-" + bloco4;
+		return cpf;
 	}
 
 // ----------------------PROPRIETÁRIO/MENU-------------------------
